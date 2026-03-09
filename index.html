@@ -42,6 +42,17 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
   letter-spacing: 0.02em;
   white-space: nowrap;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-logo-img {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
 }
 .nav-links {
   display: flex;
@@ -513,7 +524,10 @@ footer {
 <div class="test-banner">⚠ Test Environment — dropbearslurry-del.github.io</div>
 
 <nav class="nav">
-  <div class="nav-brand">Dropbear Slurry</div>
+  <div class="nav-brand">
+    <img src="https://e1f68bafd7fbe1380bca.cdn6.editmysite.com/uploads/b/e1f68bafd7fbe1380bca063216c569f9a2c974a8871abc6a40a3ca64f22f6d04/Labelling%20%28No%20Rating%29transparencytest_1768180409.png" alt="Dropbear Slurry" class="nav-logo-img" width="32" height="32">
+    Dropbear Slurry
+  </div>
   <ul class="nav-links">
     <li><a href="#products">Buy Liquid Fertiliser</a></li>
     <li><a href="about.html">About Us</a></li>
@@ -532,7 +546,7 @@ footer {
   <a href="#products" class="hero-cta">Shop Tonics</a>
 </section>
 
-<div class="strip">Free shipping on orders over $100 · Made in Queensland · pH 6.5–6.8</div>
+<div class="strip">Made in Queensland · pH 6.5–6.8 · Not classified as hazardous</div>
 
 <section class="section" id="products">
   <p class="section-label">Fertiliser</p>

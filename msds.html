@@ -34,7 +34,8 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
   background: var(--teal-dk); padding: 0 24px;
   display: flex; align-items: center; height: 56px; gap: 32px;
 }
-.nav-brand { font-family: 'Shrikhand', serif; font-size: 1.15rem; color: #fff; letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0; text-decoration: none; }
+.nav-brand { font-family: 'Shrikhand', serif; font-size: 1.15rem; color: #fff; letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.nav-logo-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.2); flex-shrink: 0; }
 .nav-links { display: flex; gap: 24px; list-style: none; flex: 1; }
 .nav-links a {
   font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
@@ -185,7 +186,10 @@ footer { background: var(--soil); padding: 32px 24px; text-align: center; }
 <div class="test-banner">⚠ Test Environment — dropbearslurry-del.github.io</div>
 
 <nav class="nav">
-  <a href="index.html" class="nav-brand">Dropbear Slurry</a>
+  <a href="index.html" class="nav-brand">
+    <img src="https://e1f68bafd7fbe1380bca.cdn6.editmysite.com/uploads/b/e1f68bafd7fbe1380bca063216c569f9a2c974a8871abc6a40a3ca64f22f6d04/Labelling%20%28No%20Rating%29transparencytest_1768180409.png" alt="Dropbear Slurry" class="nav-logo-img" width="32" height="32">
+    Dropbear Slurry
+  </a>
   <ul class="nav-links">
     <li><a href="index.html#products">Buy Liquid Fertiliser</a></li>
     <li><a href="about.html">About Us</a></li>
