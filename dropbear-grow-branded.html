@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Dropbear Grow</title>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:    #3C6267;
+    --teal-dk: #2A464A;
+    --teal-lt: #D4E8EA;
+    --cream:   #F5F0E8;
+    --offwhite:#FAFAF5;
+    --soil:    #1C1208;
+    --ash:     #6B7B7D;
+    --alert:   #C45A2A;
+  }
+
+  html, body { height: 100%; background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color: var(--soil); }
+
+  body { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; min-height: 100dvh; }
+
+  .app-shell { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    background: var(--teal-dk); padding: 10px 16px;
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  }
+  .nav-logo {
+    width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+    flex-shrink: 0; border: 1.5px solid rgba(212,232,234,0.25);
+  }
+  .nav-text { flex: 1; min-width: 0; }
+  .nav-brand {
+    font-family: 'Shrikhand', serif; font-size: 1.1rem;
+    color: #fff; letter-spacing: 0.01em; line-height: 1;
+  }
+  .nav-sub {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem;
+    color: rgba(212,232,234,0.55); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 3px;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; flex-direction: column; flex: 1; min-height: 0; }
+  .screen.active { display: flex; }
+  .scroll-area {
+    flex: 1; overflow-y: auto; padding: 16px 16px 28px;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .scroll-area::-webkit-scrollbar { display: none; }
+
+  /* ── BOTTOM NAV ── */
+  .btm-nav {
+    display: flex; background: var(--soil);
+    padding: 8px 0 env(safe-area-inset-bottom, 14px);
+    flex-shrink: 0; border-top: 2.5px solid var(--teal);
+  }
+  .btm-nav button {
+    flex: 1; background: none; border: none; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    color: rgba(255,255,255,0.38);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 0; transition: color 0.15s;
+  }
+  .btm-nav button.active { color: var(--teal-lt); }
+  .btm-nav button svg { width: 20px; height: 20px; }
+
+  /* ── TYPOGRAPHY / STRUCTURE ── */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ash); margin: 18px 0 8px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  .card {
+    background: var(--offwhite);
+    border: 1px solid rgba(60,98,103,0.12);
+    border-radius: 10px; padding: 14px; margin-bottom: 10px;
+  }
+  .card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 6px;
+  }
+  .card-body { font-size: 0.8rem; color: var(--ash); line-height: 1.6; }
+
+  /* ── HERO CARD ── */
+  .hero-card {
+    background: var(--soil); border-radius: 10px;
+    border-top: 3px solid var(--teal);
+    padding: 18px; margin-bottom: 10px;
+    position: relative; overflow: hidden;
+  }
+  .hero-card::before {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 110px; height: 110px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(60,98,103,0.28), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.54rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--teal-lt); margin-bottom: 6px;
+  }
+  .hero-title {
+    font-family: 'Shrikhand', serif; font-size: 1.5rem;
+    color: #fff; line-height: 1.1; margin-bottom: 8px;
+  }
+  .hero-body {
+    font-size: 0.75rem; color: rgba(212,232,234,0.7);
+    line-height: 1.55; margin-bottom: 16px;
+  }
+
+  /* ── ALERT ── */
+  .alert-card {
+    background: rgba(60,98,103,0.07); border: 1px solid rgba(60,98,103,0.22);
+    border-left: 3px solid var(--teal); border-radius: 10px;
+    padding: 11px 14px; margin-bottom: 10px;
+    font-size: 0.78rem; color: var(--teal-dk); line-height: 1.5;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    border: none; border-radius: 8px; padding: 10px 18px;
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; transition: background 0.15s, opacity 0.15s; display: inline-block;
+  }
+  .btn-teal  { background: var(--teal); color: #fff; }
+  .btn-teal:hover { background: var(--teal-dk); }
+  .btn-teal:active { opacity: 0.85; }
+  .btn-full  { width: 100%; text-align: center; display: block; }
+  .btn-outline {
+    background: transparent; color: var(--soil);
+    border: 1.5px solid rgba(28,18,8,0.18); border-radius: 8px;
+    padding: 10px 16px; width: 100%; text-align: center; display: block;
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s; margin-top: 8px;
+  }
+  .btn-outline:hover  { border-color: rgba(60,98,103,0.4); background: rgba(60,98,103,0.04); }
+  .btn-outline:active { border-color: var(--teal); }
+  .btn-ghost {
+    background: none; border: none; color: var(--ash);
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.04em; padding: 6px 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px; transition: color 0.15s;
+  }
+  .btn-ghost:hover { color: var(--teal); }
+
+  /* ── LOG ITEMS ── */
+  .log-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid rgba(28,18,8,0.06);
+  }
+  .log-item:last-child { border-bottom: none; }
+  .log-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .log-dot.done    { background: var(--teal); }
+  .log-dot.due     { background: var(--teal-dk); }
+  .log-dot.overdue { background: var(--alert); }
+  .log-text { flex: 1; }
+  .log-title { font-size: 0.78rem; font-weight: 500; color: var(--soil); }
+  .log-date  { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--ash); margin-top: 2px; }
+  .log-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem;
+    letter-spacing: 0.04em; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; margin-top: 3px;
+  }
+  .log-badge.done    { background: rgba(60,98,103,0.1);  color: var(--teal-dk); }
+  .log-badge.due     { background: rgba(60,98,103,0.1);  color: var(--teal-dk); }
+  .log-badge.overdue { background: rgba(196,90,42,0.1);  color: var(--alert); }
+
+  /* ── PROGRESS ── */
+  .progress-track { background: rgba(28,18,8,0.08); border-radius: 4px; height: 5px; margin: 6px 0 4px; }
+  .progress-fill  { background: var(--teal); border-radius: 4px; height: 100%; }
+  .progress-meta  {
+    display: flex; justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.56rem; color: var(--ash);
+  }
+
+  /* ── SHOP SCREEN ── */
+  .featured-card {
+    background: linear-gradient(135deg, var(--teal-lt) 0%, rgba(60,98,103,0.55) 100%);
+    border-radius: 10px; padding: 14px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 14px;
+    border: 1.5px solid rgba(60,98,103,0.3);
+  }
+  .featured-img {
+    width: 58px; height: 58px; border-radius: 8px;
+    object-fit: contain; background: #fff; flex-shrink: 0;
+    padding: 3px; border: 1px solid rgba(28,18,8,0.06);
+  }
+  .featured-info { flex: 1; }
+  .featured-name   { font-size: 0.85rem; font-weight: 600; color: var(--soil); }
+  .featured-detail { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--ash); margin-top: 3px; }
+  .featured-price  { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--teal-dk); font-weight: 500; margin-top: 5px; }
+
+  .product-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid rgba(28,18,8,0.06);
+  }
+  .product-row:last-child { border-bottom: none; }
+  .product-img {
+    width: 50px; height: 50px; border-radius: 8px;
+    object-fit: contain; background: #fff; flex-shrink: 0;
+    padding: 3px; border: 1px solid rgba(28,18,8,0.06);
+  }
+  .product-info  { flex: 1; min-width: 0; }
+  .product-name  { font-size: 0.82rem; font-weight: 500; color: var(--soil); }
+  .product-desc  { font-size: 0.68rem; color: var(--ash); margin-top: 2px; line-height: 1.4; }
+  .product-price { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--teal-dk); font-weight: 500; margin-top: 4px; }
+  .product-price.sold-out { color: var(--alert); }
+
+  /* ── DIAGNOSE ── */
+  .step-bar { display: flex; gap: 4px; margin-bottom: 20px; }
+  .step-seg {
+    flex: 1; height: 3px; border-radius: 2px;
+    background: rgba(60,98,103,0.15); transition: background 0.2s;
+  }
+  .step-seg.done { background: var(--teal); }
+
+  .diag-q   { font-weight: 600; font-size: 1.1rem; color: var(--soil); line-height: 1.4; margin-bottom: 5px; }
+  .diag-sub { font-size: 0.75rem; color: var(--ash); margin-bottom: 16px; line-height: 1.5; }
+
+  .opt-btn {
+    width: 100%; background: var(--offwhite);
+    border: 1.5px solid rgba(60,98,103,0.12); border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 8px; cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.82rem; color: var(--soil); text-align: left;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    box-shadow: 0 1px 3px rgba(28,18,8,0.05);
+  }
+  .opt-btn:hover  { border-color: var(--teal); background: rgba(212,232,234,0.3); box-shadow: 0 3px 8px rgba(60,98,103,0.1); }
+  .opt-btn:active { border-color: var(--teal-dk); background: rgba(60,98,103,0.08); box-shadow: none; }
+  .opt-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(60,98,103,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .opt-label { font-weight: 500; margin-bottom: 2px; }
+  .opt-desc  { font-size: 0.65rem; color: var(--ash); line-height: 1.4; }
+
+  .result-card {
+    background: var(--soil); border-radius: 10px; padding: 18px;
+    margin-bottom: 10px; border-top: 3px solid var(--teal);
+    position: relative; overflow: hidden;
+  }
+  .result-card::after {
+    content: '\2713'; position: absolute; right: 16px; top: 14px;
+    font-size: 1.4rem; color: rgba(212,232,234,0.12);
+  }
+  .result-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.54rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--teal-lt); margin-bottom: 5px;
+  }
+  .result-title { font-family: 'Shrikhand', serif; font-size: 1.2rem; color: #fff; margin-bottom: 8px; line-height: 1.2; }
+  .result-body  { font-size: 0.75rem; color: rgba(212,232,234,0.78); line-height: 1.6; margin-bottom: 14px; }
+
+  /* ── API KEY PANEL ── */
+  .api-panel {
+    background: var(--offwhite); border: 1.5px solid rgba(60,98,103,0.25);
+    border-radius: 10px; padding: 14px; margin-bottom: 16px;
+  }
+  .api-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.54rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-dk); margin-bottom: 5px; }
+  .api-sub   { font-size: 0.72rem; color: var(--ash); margin-bottom: 10px; line-height: 1.5; }
+  .api-row   { display: flex; gap: 8px; }
+  .api-input {
+    flex: 1; padding: 9px 12px; border: 1.5px solid rgba(60,98,103,0.2);
+    border-radius: 7px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem; color: var(--soil); background: var(--cream);
+    outline: none; min-width: 0;
+  }
+  .api-input:focus { border-color: var(--teal); }
+
+  /* ── SKELETON ── */
+  .skel {
+    background: linear-gradient(90deg, rgba(28,18,8,0.06) 25%, rgba(28,18,8,0.11) 50%, rgba(28,18,8,0.06) 75%);
+    background-size: 200% 100%; animation: shimmer 1.3s infinite; border-radius: 6px;
+  }
+  .skel-dk {
+    background: linear-gradient(90deg, rgba(212,232,234,0.07) 25%, rgba(212,232,234,0.13) 50%, rgba(212,232,234,0.07) 75%);
+    background-size: 200% 100%; animation: shimmer 1.3s infinite; border-radius: 6px;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .sk-opt  { height: 62px; margin-bottom: 8px; border-radius: 10px; }
+  .sk-line { height: 11px; margin-bottom: 7px; border-radius: 4px; }
+  .sk-h    { height: 22px; margin-bottom: 8px; border-radius: 5px; }
+  .w80 { width: 80%; } .w60 { width: 60%; }
+
+  /* ── AI BADGE / ERROR ── */
+  .ai-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.48rem;
+    letter-spacing: 0.07em; color: var(--ash); text-align: right;
+    margin: 4px 0 12px; opacity: 0.4;
+  }
+  .diag-error {
+    background: rgba(196,90,42,0.07); border: 1px solid rgba(196,90,42,0.22);
+    border-radius: 8px; padding: 11px 14px;
+    font-size: 0.75rem; color: var(--alert); margin-bottom: 10px; line-height: 1.4;
+  }
+
+  /* ── SCAN / INFO SCREEN ── */
+  .scan-hero {
+    background: var(--teal-dk); padding: 32px 20px 28px;
+    text-align: center; position: relative; overflow: hidden; flex-shrink: 0;
+    border-bottom: 3px solid var(--teal);
+  }
+  .scan-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 22px, rgba(60,98,103,0.1) 22px, rgba(60,98,103,0.1) 23px);
+    pointer-events: none;
+  }
+  .scan-logo {
+    width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+    border: 2px solid rgba(212,232,234,0.3); box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    margin: 0 auto 14px; display: block; position: relative; z-index: 1;
+  }
+  .scan-hero h2 { font-family: 'Shrikhand', serif; font-size: 1.25rem; color: #fff; margin-bottom: 8px; position: relative; z-index: 1; }
+  .scan-hero p  { font-size: 0.73rem; color: rgba(212,232,234,0.65); line-height: 1.6; position: relative; z-index: 1; }
+
+  .step-row   { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num   { width: 28px; height: 28px; border-radius: 7px; background: var(--teal); display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #fff; font-weight: 600; flex-shrink: 0; }
+  .step-title { font-size: 0.8rem; font-weight: 500; color: var(--soil); margin-bottom: 3px; }
+  .step-body  { font-size: 0.7rem; color: var(--ash); line-height: 1.5; }
+
+  .divider { height: 1px; background: rgba(28,18,8,0.07); margin: 4px 0 14px; }
+
+  .link-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 0; border-bottom: 1px solid rgba(28,18,8,0.06);
+    text-decoration: none; color: var(--soil); font-size: 0.82rem; font-weight: 500;
+    transition: color 0.15s;
+  }
+  .link-row:last-child { border-bottom: none; }
+  .link-row:hover { color: var(--teal); }
+  .link-sub   { font-size: 0.68rem; color: var(--ash); font-weight: 400; margin-top: 1px; }
+  .link-arrow { font-size: 0.75rem; color: var(--ash); flex-shrink: 0; }
+
+  /* ── TRANSITIONS ── */
+  .screen-enter { animation: fadeSlide 0.18s ease; }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="top-nav" role="banner">
+    <img class="nav-logo" src="https://e1f68bafd7fbe1380bca.cdn6.editmysite.com/uploads/b/e1f68bafd7fbe1380bca063216c569f9a2c974a8871abc6a40a3ca64f22f6d04/Labelling%20%28No%20Rating%29transparencytest_1768180409.png" alt="Dropbear Slurry">
+    <div class="nav-text">
+      <div class="nav-brand" id="nav-brand">Dropbear Grow</div>
+      <div class="nav-sub" id="nav-sub">K-666 Plant Tonic &middot; Season 2</div>
+    </div>
+  </header>
+
+  <main role="main" style="display:contents">
+
+  <!-- ── HOME ── -->
+  <section class="screen active" id="screen-home" aria-label="Home">
+    <div class="scroll-area">
+
+      <div class="hero-card">
+        <div class="hero-label">Current Streak</div>
+        <div class="hero-title">7 weeks on schedule</div>
+        <div class="hero-body">Your tomatoes are on track. Last reading: pH 6.4 &mdash; ideal range. Next feed due 14 Feb.</div>
+        <button class="btn btn-teal" onclick="setScreen('diag')">Run a Diagnosis &rarr;</button>
+      </div>
+
+      <div class="alert-card">
+        <span style="font-size:1rem;flex-shrink:0">&#8987;</span>
+        <span><strong>K-666 application due in 2 days</strong> &mdash; Raised Bed A</span>
+      </div>
+
+      <div class="section-label">Application Log</div>
+      <div class="card">
+        <div class="log-item">
+          <div class="log-dot done"></div>
+          <div class="log-text"><div class="log-title">K-666 Plant Tonic &mdash; Raised Bed A</div><div class="log-date">Applied 3 Feb 2026 &middot; 250 ml / 10 L</div></div>
+          <span class="log-badge done">Done</span>
+        </div>
+        <div class="log-item">
+          <div class="log-dot done"></div>
+          <div class="log-text"><div class="log-title">K-666 Plant Tonic &mdash; Front Garden</div><div class="log-date">Applied 1 Feb 2026 &middot; 500 ml / 20 L</div></div>
+          <span class="log-badge done">Done</span>
+        </div>
+        <div class="log-item">
+          <div class="log-dot due"></div>
+          <div class="log-text"><div class="log-title">K-666 Plant Tonic &mdash; Raised Bed A</div><div class="log-date">Due 14 Feb 2026</div></div>
+          <span class="log-badge due">Due</span>
+        </div>
+        <div class="log-item">
+          <div class="log-dot overdue"></div>
+          <div class="log-text"><div class="log-title">K-666 Plant Tonic &mdash; Pots (Balcony)</div><div class="log-date">Was due 5 Feb 2026</div></div>
+          <span class="log-badge overdue">Overdue</span>
+        </div>
+      </div>
+
+      <div class="section-label">Stock Estimate</div>
+      <div class="card">
+        <div class="card-label">K-666 Plant Tonic &middot; 5 L</div>
+        <div class="progress-track"><div class="progress-fill" style="width:32%"></div></div>
+        <div class="progress-meta"><span>~1.6 L remaining</span><span>&#8776; 3 applications left</span></div>
+        <button class="btn-outline" onclick="setScreen('shop')">Reorder before you run out &rarr;</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── DIAGNOSE ── -->
+  <section class="screen" id="screen-diag" aria-label="Diagnose">
+    <div class="scroll-area" id="diag-scroll">
+
+      <div class="api-panel" id="api-panel" style="display:none">
+        <div class="api-label">Claude API Key Required</div>
+        <div class="api-sub">Stored in this session only &mdash; never sent anywhere except Anthropic&rsquo;s API.</div>
+        <div class="api-row">
+          <input class="api-input" id="api-input" type="password" placeholder="sk-ant-&hellip;" autocomplete="off" onkeydown="if(event.key==='Enter')saveKey()">
+          <button class="btn btn-teal" onclick="saveKey()">Save</button>
+        </div>
+      </div>
+
+      <div id="diag-panel">
+        <div class="step-bar" id="step-bar">
+          <div class="step-seg" id="seg0"></div>
+          <div class="step-seg" id="seg1"></div>
+          <div class="step-seg" id="seg2"></div>
+        </div>
+        <div class="diag-q"   id="diag-q"></div>
+        <div class="diag-sub" id="diag-sub"></div>
+        <div id="opts-wrap"></div>
+        <button class="btn-ghost" id="back-btn" onclick="goBack()" style="display:none">&larr; Back</button>
+        <div class="ai-badge" id="ai-badge" style="display:none">Powered by Claude</div>
+      </div>
+
+      <div id="result-panel" style="display:none">
+        <div class="result-card">
+          <div class="result-eyebrow" id="res-label">Diagnosing&hellip;</div>
+          <div class="result-title" id="res-title">
+            <div class="skel-dk sk-h w80"></div>
+          </div>
+          <div class="result-body" id="res-body">
+            <div class="skel-dk sk-line w80"></div>
+            <div class="skel-dk sk-line"></div>
+            <div class="skel-dk sk-line w60"></div>
+          </div>
+          <a id="shop-btn-link" href="https://dropbearslurry-del.github.io/index.html#products" target="_blank" style="display:none;text-decoration:none">
+            <button class="btn btn-teal btn-full" style="margin-top:2px">Shop Tonics &rarr;</button>
+          </a>
+        </div>
+        <div class="card">
+          <div class="card-label">What to do</div>
+          <div class="card-body" id="res-action">
+            <div class="skel sk-line w80"></div>
+            <div class="skel sk-line w60"></div>
+          </div>
+        </div>
+        <div class="ai-badge">Powered by Claude</div>
+        <button class="btn-outline" onclick="resetDiag()">&larr; Run another diagnosis</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SHOP ── -->
+  <section class="screen" id="screen-shop" aria-label="Shop">
+    <div class="scroll-area">
+
+      <div class="section-label">Running Low</div>
+      <div class="featured-card">
+        <img class="featured-img" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 5L">
+        <div class="featured-info">
+          <div class="featured-name">K-666 Plant Tonic &mdash; 5 L</div>
+          <div class="featured-detail">~3 applications left &middot; runs out ~21 Feb</div>
+          <div class="featured-price">$170.00 AUD &middot; GST incl.</div>
+        </div>
+        <a href="https://square.link/u/g8a2l28m" target="_blank" style="text-decoration:none;flex-shrink:0">
+          <button class="btn btn-teal" style="font-size:0.72rem;padding:8px 13px">Order &rarr;</button>
+        </a>
+      </div>
+
+      <div class="section-label">Stock</div>
+      <div class="card">
+        <div class="card-label">K-666 Plant Tonic &middot; 5 L</div>
+        <div class="progress-track"><div class="progress-fill" style="width:32%"></div></div>
+        <div class="progress-meta"><span>~1.6 L left</span><span>~3 uses remaining</span></div>
+      </div>
+
+      <div class="section-label">All Products</div>
+      <div class="card">
+        <div class="product-row">
+          <img class="product-img" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 5L">
+          <div class="product-info">
+            <div class="product-name">K-666 Plant Tonic &mdash; 5 L</div>
+            <div class="product-desc">Full-strength formula for established plants and heavy feeders.</div>
+            <div class="product-price">$170.00 AUD</div>
+          </div>
+          <a href="https://square.link/u/g8a2l28m" target="_blank" style="text-decoration:none;flex-shrink:0">
+            <button class="btn btn-teal" style="font-size:0.68rem;padding:7px 12px">Order</button>
+          </a>
+        </div>
+        <div class="product-row">
+          <img class="product-img" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/549bb5bfbad951c7b68a4c02c8790d323461d5a9/original.png" alt="K-666 1L">
+          <div class="product-info">
+            <div class="product-name">K-666 Plant Tonic &mdash; 1 L</div>
+            <div class="product-desc">Same formula, starter size. Ideal for pots &amp; small plots.</div>
+            <div class="product-price">$40.00 AUD</div>
+          </div>
+          <a href="https://square.link/u/G4UDCXCg" target="_blank" style="text-decoration:none;flex-shrink:0">
+            <button class="btn btn-teal" style="font-size:0.68rem;padding:7px 12px">Order</button>
+          </a>
+        </div>
+        <div class="product-row">
+          <img class="product-img" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/98aa443d53148b9f23dc3e2f593fb0bd7a6e8d40/original.png" alt="K-333 1L">
+          <div class="product-info">
+            <div class="product-name">K-333 Plant Tonic &mdash; 1 L</div>
+            <div class="product-desc">Gentler formula for seedlings, cuttings &amp; sensitive species.</div>
+            <div class="product-price sold-out">Sold out &mdash; check back soon</div>
+          </div>
+          <button disabled style="font-size:0.68rem;padding:7px 12px;flex-shrink:0;background:rgba(28,18,8,0.08);border:none;border-radius:8px;color:var(--ash);cursor:not-allowed">Out</button>
+        </div>
+        <div class="product-row" style="border-bottom:none">
+          <div style="width:50px;height:50px;border-radius:8px;background:rgba(60,98,103,0.1);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem">&#127807;</div>
+          <div class="product-info">
+            <div class="product-name">Dropbear Soil Blend</div>
+            <div class="product-desc">Premium mix formulated to work with K-666 and K-333.</div>
+            <div class="product-price">Coming soon</div>
+          </div>
+          <button class="btn btn-teal" style="font-size:0.68rem;padding:7px 12px;flex-shrink:0" onclick="notifyMe(this)">Notify</button>
+        </div>
+      </div>
+
+      <a href="https://dropbearslurry-del.github.io/index.html#products" target="_blank" style="text-decoration:none;display:block">
+        <button class="btn-outline" style="margin-top:0">View full shop online &rarr;</button>
+      </a>
+
+      <div class="section-label">Order History</div>
+      <div class="card">
+        <div class="log-item">
+          <div class="log-dot done"></div>
+          <div class="log-text"><div class="log-title">K-666 Plant Tonic 5 L &times; 2</div><div class="log-date">12 Jan 2026 &middot; $340.00 &middot; Delivered</div></div>
+        </div>
+        <div class="log-item" style="border-bottom:none">
+          <div class="log-dot done"></div>
+          <div class="log-text"><div class="log-title">K-666 Plant Tonic 5 L &times; 1</div><div class="log-date">3 Nov 2025 &middot; $170.00 &middot; Delivered</div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── INFO / SCAN ── -->
+  <section class="screen" id="screen-scan" aria-label="Info">
+    <div class="scan-hero">
+      <img class="scan-logo" src="https://e1f68bafd7fbe1380bca.cdn6.editmysite.com/uploads/b/e1f68bafd7fbe1380bca063216c569f9a2c974a8871abc6a40a3ca64f22f6d04/Labelling%20%28No%20Rating%29transparencytest_1768180409.png" alt="Dropbear Slurry">
+      <h2>Scan. No download needed.</h2>
+      <p>Every Dropbear Slurry product includes a QR code.<br>Scan it once &mdash; Dropbear Grow opens in your browser.</p>
+    </div>
+    <div class="scroll-area">
+
+      <div class="section-label">How it works</div>
+      <div class="card">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div><div class="step-title">Scan the QR on your bottle</div><div class="step-body">Opens Dropbear Grow directly in Safari or Chrome &mdash; no App Store, no account required.</div></div>
+          </div>
+          <div class="divider"></div>
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div><div class="step-title">Log your first application</div><div class="step-body">Tell us what you're growing and how much you applied. We set your next reminder automatically.</div></div>
+          </div>
+          <div class="divider"></div>
+          <div class="step-row">
+            <div class="step-num">3</div>
+            <div><div class="step-title">We remind you. You reorder.</div><div class="step-body">Get notified when your next application is due and when stock is running low.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-teal btn-full" onclick="installApp()">Add to Home Screen</button>
+
+      <div class="section-label">Website</div>
+      <div class="card">
+        <a href="https://dropbearslurry-del.github.io/" target="_blank" class="link-row">
+          <div><div>Dropbear Slurry</div><div class="link-sub">Products, shop &amp; info</div></div>
+          <span class="link-arrow">&rarr;</span>
+        </a>
+        <a href="https://dropbearslurry-del.github.io/diagnose.html" target="_blank" class="link-row">
+          <div><div>AI Plant Diagnose</div><div class="link-sub">Full-screen AI health tool</div></div>
+          <span class="link-arrow">&rarr;</span>
+        </a>
+        <a href="https://dropbearslurry-del.github.io/about.html" target="_blank" class="link-row">
+          <div><div>About Us</div><div class="link-sub">Our story &amp; products</div></div>
+          <span class="link-arrow">&rarr;</span>
+        </a>
+        <a href="https://dropbearslurry-del.github.io/msds.html" target="_blank" class="link-row">
+          <div><div>Safety Data Sheets</div><div class="link-sub">MSDS for K-666 and K-333</div></div>
+          <span class="link-arrow">&rarr;</span>
+        </a>
+        <a href="https://dropbearslurry-del.github.io/contact.html" target="_blank" class="link-row">
+          <div><div>Contact Us</div><div class="link-sub">Bulk orders, questions &amp; support</div></div>
+          <span class="link-arrow">&rarr;</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ── BOTTOM NAV ── -->
+  <nav class="btm-nav" role="navigation" aria-label="Main navigation">
+    <button id="nav-home" class="active" onclick="setScreen('home')" aria-label="Home">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2L2 8v10h5v-5h6v5h5V8z"/></svg>
+      Home
+    </button>
+    <button id="nav-diag" onclick="setScreen('diag')" aria-label="Diagnose">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg>
+      Diagnose
+    </button>
+    <button id="nav-shop" onclick="setScreen('shop')" aria-label="Shop">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3h2l.4 2M7 13h10l2-7H5.4"/><circle cx="7" cy="17" r="1"/><circle cx="17" cy="17" r="1"/></svg>
+      Shop
+    </button>
+    <button id="nav-scan" onclick="setScreen('scan')" aria-label="Info">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><path d="M11 11h2v2h-2zM15 11h2M11 15h2M15 15h2"/></svg>
+      Info
+    </button>
+  </nav>
+
+</div>
+<script>
+(function () {
+
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  function installApp() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+    } else {
+      alert('To add to your home screen: tap the Share icon then \u201cAdd to Home Screen\u201d.');
+    }
+  }
+
+  function notifyMe(btn) {
+    btn.textContent = 'Registered \u2713';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+  }
+
+  var NAV_META = {
+    home: { brand: 'Dropbear Grow',  sub: 'K-666 Plant Tonic \u00b7 Season 2' },
+    diag: { brand: 'Diagnose',       sub: 'AI Plant Health Tool' },
+    shop: { brand: 'Shop',           sub: 'Dropbear Slurry Pty Ltd' },
+    scan: { brand: 'Get Started',    sub: 'Scan \u00b7 Track \u00b7 Reorder' },
+  };
+
+  function setScreen(id) {
+    document.querySelectorAll('.screen').forEach(function (s) { s.classList.remove('active'); });
+    document.querySelectorAll('.btm-nav button').forEach(function (b) { b.classList.remove('active'); });
+    var el = document.getElementById('screen-' + id);
+    el.classList.add('active', 'screen-enter');
+    el.addEventListener('animationend', function h() {
+      el.classList.remove('screen-enter');
+      el.removeEventListener('animationend', h);
+    });
+    document.getElementById('nav-' + id).classList.add('active');
+    if (id === 'diag') {
+      document.getElementById('api-panel').style.display = getKey() ? 'none' : 'block';
+    }
+    var m = NAV_META[id];
+    document.getElementById('nav-brand').textContent = m.brand;
+    document.getElementById('nav-sub').textContent   = m.sub;
+  }
+
+  // ── AI DIAGNOSE ───────────────────────────────────────────────────────────
+
+  var SK       = 'dbg_ak';
+  var _history = [];
+  var _opts    = [];
+
+  var STATIC = [
+    { icon: '&#127807;', label: 'Yellowing leaves',       desc: 'Leaves turning pale, yellow, or losing colour' },
+    { icon: '&#129397;', label: 'Wilting or drooping',    desc: 'Plant has lost structure or looks limp' },
+    { icon: '&#127810;', label: 'Brown spots or edges',   desc: 'Leaf tips, edges, or patches turning brown' },
+    { icon: '&#127793;', label: 'Slow or stunted growth', desc: 'Not growing or developing as expected' },
+    { icon: '&#128027;', label: 'Pests or bugs',          desc: 'Visible insects, sticky residue, or chew damage' },
+    { icon: '&#128167;', label: 'Root or soil concerns',  desc: 'Overwatering, drainage, or root rot suspected' },
+  ];
+
+  var SYSTEM =
+    'You are a plant health diagnostic assistant for Dropbear Slurry, makers of K-666 and K-333 Plant Tonics'
+    + ' \u2014 balanced NPK liquid fertilisers with micronutrients, pH 6.5\u20136.8, for vegetables, herbs, ornamentals, and sensitive plants.'
+    + ' K-666 is the full-strength formula for established plants and heavy feeders.'
+    + ' K-333 is the gentler formula (lower potassium silicate) for cuttings, seedlings, and sensitive species.'
+    + ' Ask as many follow-up questions as needed to reach a confident diagnosis \u2014 no fixed limit.'
+    + ' When you have enough information, return a diagnosis instead of another question.'
+    + ' CRITICAL: output raw JSON only. No markdown. No code fences. No backticks. Start with { and end with }.';
+
+  function getKey() { return sessionStorage.getItem(SK) || ''; }
+
+  function saveKey() {
+    var v = (document.getElementById('api-input').value || '').trim();
+    if (!v) return;
+    sessionStorage.setItem(SK, v);
+    document.getElementById('api-panel').style.display = 'none';
+    _showStatic();
+  }
+
+  function _ensureKey() {
+    if (getKey()) return true;
+    document.getElementById('api-panel').style.display = 'block';
+    document.getElementById('diag-scroll').scrollTop = 0;
+    return false;
+  }
+
+  async function _claude(prompt) {
+    var r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': getKey(),
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 800,
+        system: SYSTEM,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!r.ok) {
+      var e = await r.json().catch(function () { return {}; });
+      throw new Error((e.error && e.error.message) || 'API error ' + r.status);
+    }
+    var d = await r.json();
+    var t = d.content[0].text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+    return JSON.parse(t);
+  }
+
+  function _renderOpts(opts, fn) {
+    return opts.map(function (o, i) {
+      return '<button class="opt-btn" onclick="' + fn + '(' + i + ')">'
+        + '<div class="opt-icon">' + (o.icon || '') + '</div>'
+        + '<div><div class="opt-label">' + (o.label || '') + '</div>'
+        + '<div class="opt-desc">' + (o.desc || o.description || '') + '</div></div>'
+        + '</button>';
+    }).join('');
+  }
+
+  function _skels(n, cls) {
+    var h = '';
+    for (var i = 0; i < n; i++) h += '<div class="skel ' + cls + '"></div>';
+    return h;
+  }
+
+  function _setLoading() {
+    document.getElementById('diag-q').innerHTML   = '<div class="skel sk-h w80" style="margin-bottom:0"></div>';
+    document.getElementById('diag-sub').innerHTML = '<div class="skel sk-line w60" style="margin-bottom:0"></div>';
+    document.getElementById('opts-wrap').innerHTML = _skels(3, 'sk-opt');
+  }
+
+  function _updateBar() {
+    [0, 1, 2].forEach(function (i) {
+      document.getElementById('seg' + i).classList.toggle('done', i < Math.min(_history.length, 3));
+    });
+  }
+
+  function _showStatic() {
+    document.getElementById('diag-panel').style.display  = 'block';
+    document.getElementById('result-panel').style.display = 'none';
+    document.getElementById('back-btn').style.display    = 'none';
+    document.getElementById('ai-badge').style.display    = 'none';
+    document.getElementById('diag-scroll').scrollTop     = 0;
+    _opts    = STATIC;
+    _history = [];
+    _updateBar();
+    document.getElementById('diag-q').innerHTML   = "What&rsquo;s your main concern?";
+    document.getElementById('diag-sub').textContent = "Select the symptom that best describes what you\u2019re seeing.";
+    document.getElementById('opts-wrap').innerHTML  = _renderOpts(STATIC, 'onOpt');
+  }
+
+  async function _askNext() {
+    if (!_ensureKey()) return;
+    document.getElementById('diag-panel').style.display  = 'block';
+    document.getElementById('result-panel').style.display = 'none';
+    document.getElementById('back-btn').style.display    = 'block';
+    document.getElementById('ai-badge').style.display    = 'block';
+    document.getElementById('diag-scroll').scrollTop     = 0;
+    _setLoading();
+    _updateBar();
+
+    var lines = _history.map(function (h, i) {
+      return 'Q' + (i + 1) + ': ' + h.q + '\nA' + (i + 1) + ': ' + h.a;
+    }).join('\n\n');
+    var force  = _history.length >= 8;
+    var prompt = 'Diagnostic history so far:\n' + lines + '\n\n'
+      + (force
+        ? 'Maximum questions reached. You MUST return a diagnosis now.\n\n'
+        : 'Either ask one more targeted follow-up question OR diagnose if you have enough information.\n\n'
+          + 'For a question: { "type": "question", "question": "...", "sub": "...", "options": [ { "icon": "emoji", "label": "...", "description": "..." } ] }\n'
+          + 'Return 2\u20135 distinct, useful options.\n\n')
+      + 'For a diagnosis: { "type": "result", "label": "Category", "title": "Diagnosis name", '
+      + '"body": "2\u20133 sentences. Recommend K-666 for established plants or K-333 for seedlings/cuttings/sensitive species if relevant.", '
+      + '"action": "2\u20133 concrete steps. Include the appropriate tonic and application rate if helpful." }';
+
+    try {
+      var p = await _claude(prompt);
+      if (p.type === 'result') { _showResult(p); return; }
+      _opts = p.options;
+      document.getElementById('diag-q').textContent   = p.question;
+      document.getElementById('diag-sub').textContent = p.sub;
+      document.getElementById('opts-wrap').innerHTML  = _renderOpts(p.options, 'onOpt');
+      _updateBar();
+    } catch (e) {
+      document.getElementById('diag-q').textContent   = 'Something went wrong';
+      document.getElementById('diag-sub').textContent = '';
+      document.getElementById('opts-wrap').innerHTML  =
+        '<div class="diag-error">' + e.message + '</div>'
+        + '<button class="btn-outline" onclick="resetDiag()" style="margin-top:0">\u2190 Start over</button>';
+    }
+  }
+
+  function onOpt(i) {
+    var label = (_opts[i] || {}).label || String(i);
+    var q     = document.getElementById('diag-q').textContent;
+    _history.push({ q: q, a: label });
+    _askNext();
+  }
+
+  function _showResult(p) {
+    document.getElementById('diag-panel').style.display  = 'none';
+    document.getElementById('result-panel').style.display = 'block';
+    document.getElementById('diag-scroll').scrollTop     = 0;
+    document.getElementById('res-label').textContent  = p.label;
+    document.getElementById('res-title').textContent  = p.title;
+    document.getElementById('res-body').textContent   = p.body;
+    document.getElementById('res-action').textContent = p.action;
+    document.getElementById('shop-btn-link').style.display = 'block';
+  }
+
+  function goBack() {
+    if (_history.length === 0) return;
+    _history.pop();
+    if (_history.length === 0) { _showStatic(); } else { _askNext(); }
+  }
+
+  function resetDiag() {
+    _history = [];
+    _opts    = [];
+    _showStatic();
+  }
+
+  // Init
+  _showStatic();
+
+  // Expose globals for inline onclick
+  window.setScreen  = setScreen;
+  window.saveKey    = saveKey;
+  window.onOpt      = onOpt;
+  window.goBack     = goBack;
+  window.resetDiag  = resetDiag;
+  window.installApp = installApp;
+  window.notifyMe   = notifyMe;
+
+}());
+</script>
+</body>
+</html>
