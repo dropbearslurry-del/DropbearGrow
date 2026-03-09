@@ -460,24 +460,30 @@ footer {
   bottom: 24px;
   right: 20px;
   z-index: 998;
-  background: var(--green);
-  color: #fff;
-  border: none;
+  background: var(--soil);
+  color: var(--teal-lt);
+  border: 1px solid rgba(60,98,103,0.35);
   border-radius: 50px;
-  padding: 13px 20px;
+  padding: 12px 20px;
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 0.84rem;
+  font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(26,16,8,0.28);
+  box-shadow: 0 4px 20px rgba(28,18,8,0.4), 0 1px 0 rgba(212,232,234,0.06) inset;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   line-height: 1;
-  transition: transform 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.01em;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
 }
-#dbg-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,16,8,0.34); }
+#dbg-fab:hover {
+  background: var(--teal-dk);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(28,18,8,0.45), 0 0 0 1px rgba(60,98,103,0.5);
+}
 #dbg-fab:active { transform: translateY(0); }
+#dbg-fab svg { flex-shrink: 0; opacity: 0.9; }
 
 #dbg-modal {
   display: none;
@@ -696,7 +702,13 @@ footer {
 </footer>
 
 <!-- Diagnostic FAB + Modal -->
-<button id="dbg-fab" aria-label="Diagnose my plant">🌿 Diagnose my plant</button>
+<button id="dbg-fab" aria-label="Diagnose my plant">
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+    <path d="M13 1.5C13 1.5 7.5 1.5 4.5 4.5C1.5 7.5 1.5 13 1.5 13C1.5 13 7 11.8 9.5 9.5C12 7.2 13 1.5 13 1.5Z" fill="currentColor"/>
+    <path d="M1.5 13L6.5 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+  Diagnose my plant
+</button>
 <div id="dbg-modal" role="dialog" aria-modal="true" aria-label="Plant Diagnostic">
   <div id="dbg-frame-wrap">
     <iframe id="dbg-iframe" src="about:blank" title="Plant Diagnostic"></iframe>
