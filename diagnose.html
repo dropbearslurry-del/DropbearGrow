@@ -435,7 +435,7 @@
             <div class="skeleton-dk sk-line mb8"></div>
             <div class="skeleton-dk sk-line w60 mb0"></div>
           </div>
-          <button class="btn-sky" id="order-btn" style="display:none">Order K-666 now →</button>
+          <button class="btn-sky" id="order-btn" style="display:none">Shop Tonics →</button>
         </div>
         <div class="card">
           <div class="card-label">What to do</div>
@@ -507,8 +507,10 @@
 
   // ── Claude API ─────────────────────────────────────────────────────────────
 
-  var SYSTEM = 'You are a plant health diagnostic assistant for Dropbear Grow, makers of K-666 Plant Tonic'
-    + ' — a balanced NPK liquid fertiliser with micronutrients, pH 6.2–6.8, for vegetables, herbs, and ornamentals.'
+  var SYSTEM = 'You are a plant health diagnostic assistant for Dropbear Slurry, makers of K-666 and K-333 Plant Tonics'
+    + ' — balanced NPK liquid fertilisers with micronutrients, pH 6.5–6.8, for vegetables, herbs, ornamentals, and sensitive plants.'
+    + ' K-666 is the full-strength formula for established plants and heavy feeders.'
+    + ' K-333 is the gentler formula (lower potassium silicate) for cuttings, seedlings, and sensitive species.'
     + ' Ask as many follow-up questions as needed to reach a confident diagnosis — no fixed limit.'
     + ' When you have enough information, return a diagnosis instead of another question.'
     + ' CRITICAL: output raw JSON only. No markdown. No code fences. No backticks. No extra text before or after. Start your response with { and end with }.';
@@ -626,7 +628,7 @@
             + '{ "type": "question", "question": "...", "sub": "...", "options": [ { "icon": "emoji", "label": "...", "description": "..." } ] }\n'
             + 'Return 2-5 options as needed — use exactly as many as are genuinely distinct and useful.\n\n')
       + 'If ready to diagnose, return:\n'
-      + '{ "type": "result", "label": "Diagnosis category", "title": "Specific diagnosis name", "body": "2-3 sentence explanation mentioning K-666 if relevant.", "action": "2-3 concrete steps including K-666 application rate if helpful." }';
+      + '{ "type": "result", "label": "Diagnosis category", "title": "Specific diagnosis name", "body": "2-3 sentence explanation. If a fertiliser is relevant, recommend K-666 for established plants or K-333 for seedlings/cuttings/sensitive species.", "action": "2-3 concrete steps. Include the appropriate tonic (K-666 or K-333) and application rate if helpful." }';
 
     try {
       var parsed = await _callClaude(prompt);

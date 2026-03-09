@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dropbear Slurry — K-666 Plant Tonic</title>
+<title>Dropbear Slurry — Plant Tonics &amp; Fertiliser</title>
 <link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,6 +68,44 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
   text-transform: uppercase;
   cursor: pointer;
   flex-shrink: 0;
+}
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 4px 0 4px 8px;
+  margin-left: auto;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── MOBILE NAV ── */
+@media (max-width: 700px) {
+  .nav {
+    height: auto;
+    padding: 12px 20px;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .nav-brand { flex: 1; }
+  .nav-toggle { display: flex; align-items: center; }
+  .nav-cart { display: none; }
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 8px;
+    padding-bottom: 6px;
+  }
+  .nav-links li { padding: 8px 0; }
+  .nav-links a { font-size: 0.75rem; }
+  .nav.nav-open .nav-links { display: flex; }
 }
 
 /* ── HERO ── */
@@ -157,7 +195,7 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
 /* ── PRODUCT GRID ── */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 20px;
 }
 .product-card {
@@ -168,23 +206,31 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
   transition: box-shadow 0.2s, transform 0.2s;
 }
 .product-card:hover { box-shadow: 0 8px 32px rgba(60,98,103,0.14); transform: translateY(-2px); }
+
+/* product image — supports dual front/rear flip */
 .product-img {
   background: var(--teal-lt);
   height: 260px;
+  overflow: hidden;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
-  overflow: hidden;
 }
 .product-img img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
   padding: 20px;
-  transition: transform 0.35s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
-.product-card:hover .product-img img { transform: scale(1.05); }
+.product-img .img-rear { opacity: 0; }
+.product-card:hover .product-img .img-front { opacity: 0;  transform: scale(1.05); }
+.product-card:hover .product-img .img-rear  { opacity: 1;  transform: scale(1.05); }
+
 .product-coming-soon {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.6rem;
@@ -277,6 +323,16 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
   margin-bottom: 6px;
 }
 .feature-body { font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+/* ── ABOUT ── */
+.about-section { background: var(--cream); }
+.about-inner { max-width: 640px; }
+.about-inner p {
+  font-size: 0.95rem;
+  color: var(--ash);
+  line-height: 1.72;
+}
+.about-inner p + p { margin-top: 14px; }
 
 /* ── TESTIMONIAL ── */
 .testimonial-section { background: var(--offwhite); }
@@ -460,13 +516,14 @@ footer {
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-cart">Cart (0)</div>
+  <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
 </nav>
 
 <section class="hero">
   <p class="hero-eyebrow">Australian made &amp; owned · Queensland</p>
   <h1>Feed Your Plants<br>Like You Mean It</h1>
-  <p class="hero-sub">Commercial-grade liquid nutrition in a bottle built for real growers. K-666 Plant Tonic — concentrated, fast-absorbing, pH-balanced.</p>
-  <a href="#products" class="hero-cta">Shop K-666</a>
+  <p class="hero-sub">Commercial-grade liquid nutrition for real growers. K-666 and K-333 Plant Tonics — concentrated, fast-absorbing, pH-balanced.</p>
+  <a href="#products" class="hero-cta">Shop Tonics</a>
 </section>
 
 <div class="strip">Free shipping on orders over $100 · Made in Queensland · pH 6.5–6.8</div>
@@ -478,7 +535,8 @@ footer {
 
     <div class="product-card">
       <div class="product-img">
-        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/549bb5bfbad951c7b68a4c02c8790d323461d5a9/original.png" alt="K-666 Plant Tonic 1L — front">
+        <img class="img-front" loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/549bb5bfbad951c7b68a4c02c8790d323461d5a9/original.png" alt="K-666 Plant Tonic 1L — front">
+        <img class="img-rear"  loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4d03ff29fdf483d81400b497fb9b260158b6dd7c/original.png" alt="K-666 Plant Tonic 1L — rear">
       </div>
       <div class="product-body">
         <p class="product-tag">Tonics</p>
@@ -493,7 +551,8 @@ footer {
 
     <div class="product-card">
       <div class="product-img">
-        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/98aa443d53148b9f23dc3e2f593fb0bd7a6e8d40/original.png" alt="K-333 Plant Tonic 1L — front">
+        <img class="img-front" loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/98aa443d53148b9f23dc3e2f593fb0bd7a6e8d40/original.png" alt="K-333 Plant Tonic 1L — front">
+        <img class="img-rear"  loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/8f2b7a46707aa5b9245732470111c6b4174a9f79/original.png" alt="K-333 Plant Tonic 1L — rear">
       </div>
       <div class="product-body">
         <p class="product-tag">Tonics</p>
@@ -508,7 +567,8 @@ footer {
 
     <div class="product-card">
       <div class="product-img">
-        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 Plant Tonic 5L — front">
+        <img class="img-front" loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 Plant Tonic 5L — front">
+        <img class="img-rear"  loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1153bdbbd317d2a32b52a6538e7d6c0d39eeee5d/original.png" alt="K-666 Plant Tonic 5L — rear">
       </div>
       <div class="product-body">
         <p class="product-tag">Tonics</p>
@@ -572,6 +632,16 @@ footer {
   </div>
 </div>
 
+<section class="section about-section" id="about">
+  <div class="about-inner">
+    <p class="section-label">About Us</p>
+    <h2>Built for Growers,<br>Not Shelves</h2>
+    <p>Dropbear Slurry started with a simple idea: growers deserve access to the same commercial-grade nutrition that professionals use — without the industrial minimums or the marketing fluff.</p>
+    <p>K-666 and K-333 Plant Tonics are concentrated liquid fertilisers formulated in Queensland with a focus on fast uptake, pH balance, and plant safety. K-666 is built for established plants and heavy feeders. K-333 is our gentler formula — lower potassium silicate, ideal for cuttings, seedlings, and sensitive species.</p>
+    <p>Australian owned. Made local. Grown serious.</p>
+  </div>
+</section>
+
 <section class="section testimonial-section">
   <div class="testimonial-inner">
     <p class="section-label">What growers say</p>
@@ -581,11 +651,11 @@ footer {
 </section>
 
 <section class="newsletter" id="contact">
-  <h2>Get notified when living soil drops</h2>
-  <p>Be first to know when our living soil blend is ready.</p>
+  <h2>Stay in the Loop</h2>
+  <p>New products, growing tips, and the occasional deal. No spam — just good stuff.</p>
   <div class="newsletter-form">
     <input type="email" placeholder="your@email.com">
-    <button type="submit">Notify Me</button>
+    <button type="submit">Sign Up</button>
   </div>
 </section>
 
@@ -642,6 +712,24 @@ footer {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeDiag();
   });
+
+  // Mobile nav toggle
+  var navToggle = document.querySelector('.nav-toggle');
+  var nav = document.querySelector('.nav');
+  if (navToggle) {
+    navToggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.textContent = open ? '✕' : '☰';
+    });
+    document.querySelectorAll('.nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.textContent = '☰';
+      });
+    });
+  }
 })();
 </script>
 
