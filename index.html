@@ -2,722 +2,585 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Diagnose — Test</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropbear Slurry — K-666 Plant Tonic</title>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --sky:      #67C5DA;
-    --sky-dk:   #3A9BB0;
-    --sky-lt:   #C8EBF3;
-    --green:    #7A9B2E;
-    --green-dk: #566D20;
-    --green-lt: #EBF0D8;
-    --soil:     #1A1008;
-    --offwhite: #F0EFE6;
-    --ash:      #7A8A7C;
-    --alert:    #C45A2A;
-    --cream:    #F4F2E8;
-    --surface:  #FDFBF5;
-  }
+:root {
+  --teal:     #3C6267;
+  --teal-dk:  #2A464A;
+  --teal-lt:  #D4E8EA;
+  --cream:    #F5F0E8;
+  --offwhite: #FAFAF5;
+  --soil:     #1C1208;
+  --ash:      #6B7B7D;
+  --alert:    #C45A2A;
+  --green:    #7A9B2E;
+}
 
-  html, body { height: 100%; background: var(--cream); font-family: 'DM Sans', sans-serif; }
+html { scroll-behavior: smooth; }
+body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color: var(--soil); }
 
-  body {
-    max-width: 480px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-  }
+/* ── NAV ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--teal-dk);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  gap: 32px;
+}
+.nav-brand {
+  font-family: 'Shrikhand', serif;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  flex: 1;
+}
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: #fff; }
+.nav-cart {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.72);
+  text-transform: uppercase;
+  cursor: pointer;
+  flex-shrink: 0;
+}
 
-  .app-shell {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    overflow: hidden;
-  }
+/* ── HERO ── */
+.hero {
+  background: var(--teal);
+  padding: 64px 24px 72px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-lt);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Shrikhand', serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  color: #fff;
+  line-height: 1.08;
+  margin-bottom: 18px;
+  letter-spacing: 0.01em;
+}
+.hero-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.78);
+  max-width: 480px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+.hero-cta {
+  display: inline-block;
+  background: #fff;
+  color: var(--teal-dk);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  transition: background 0.15s, transform 0.15s;
+}
+.hero-cta:hover { background: var(--teal-lt); transform: translateY(-1px); }
 
-  /* ── TOP NAV ── */
-  .top-nav {
-    padding: 12px 16px 10px;
-    background: var(--cream);
-    flex-shrink: 0;
-    border-bottom: 1px solid rgba(26,16,8,0.08);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+/* ── STRIP ── */
+.strip {
+  background: var(--soil);
+  padding: 12px 24px;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
 
-  .nav-logo {
-    width: 42px; height: 42px;
-    border-radius: 10px;
-    background: var(--soil);
-    border-top: 2px solid var(--green);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(26,16,8,0.18);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.44rem;
-    font-weight: 500;
-    color: var(--green);
-    letter-spacing: 0.07em;
-    text-align: center;
-    line-height: 1.55;
-  }
+/* ── SECTION ── */
+.section { padding: 64px 24px; max-width: 1040px; margin: 0 auto; }
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.section h2 {
+  font-family: 'Shrikhand', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: var(--soil);
+  margin-bottom: 40px;
+  line-height: 1.15;
+}
 
-  .nav-text { flex: 1; }
-  .nav-title { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 500; color: var(--soil); letter-spacing: 0.04em; }
-  .nav-sub   { font-family: 'DM Mono', monospace; font-size: 0.56rem; color: var(--ash); letter-spacing: 0.1em; margin-top: 2px; }
+/* ── PRODUCT GRID ── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.product-card {
+  background: var(--offwhite);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(60,98,103,0.12);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.product-card:hover { box-shadow: 0 8px 32px rgba(60,98,103,0.14); transform: translateY(-2px); }
+.product-img {
+  background: var(--teal-lt);
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+}
+.product-body { padding: 20px; }
+.product-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.product-name {
+  font-family: 'Shrikhand', serif;
+  font-size: 1.3rem;
+  color: var(--soil);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.product-desc {
+  font-size: 0.78rem;
+  color: var(--ash);
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.product-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--soil);
+}
+.product-price span {
+  font-size: 0.6rem;
+  color: var(--ash);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 2px;
+}
+.btn-add {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.btn-add:hover { background: var(--teal-dk); }
 
-  .test-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    background: var(--alert);
-    color: #fff;
-    border-radius: 7px;
-    padding: 5px 11px;
-    flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(196,90,42,0.35);
-  }
+/* ── FEATURE STRIP ── */
+.features {
+  background: var(--teal-dk);
+  padding: 48px 24px;
+}
+.features-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+  text-align: center;
+}
+.feature-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.feature-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-lt);
+  margin-bottom: 6px;
+}
+.feature-body { font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
 
-  /* ── KEY STATUS BAR ── */
-  .key-status {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.57rem;
-    letter-spacing: 0.06em;
-    background: rgba(154,176,55,0.08);
-    border-bottom: 1px solid rgba(154,176,55,0.22);
-    color: var(--green-dk);
-    padding: 9px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-  .key-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
-  }
-  .key-dot.off { background: var(--alert); }
-  .key-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .key-status button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.52rem;
-    color: var(--alert);
-    text-decoration: underline;
-    padding: 0;
-    flex-shrink: 0;
-  }
+/* ── TESTIMONIAL ── */
+.testimonial-section { background: var(--offwhite); }
+.testimonial-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+.testimonial-quote {
+  font-family: 'Shrikhand', serif;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  color: var(--teal-dk);
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.testimonial-source {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
 
-  /* ── ANSWER TRAIL ── */
-  .answer-trail {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 16px;
-    max-height: 72px;
-    overflow-y: auto;
-    scrollbar-width: none;
-  }
-  .answer-trail::-webkit-scrollbar { display: none; }
-  .trail-chip {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.54rem;
-    letter-spacing: 0.05em;
-    background: rgba(103,197,218,0.12);
-    color: var(--sky-dk);
-    border: 1px solid rgba(103,197,218,0.3);
-    border-radius: 20px;
-    padding: 3px 10px;
-  }
+/* ── NEWSLETTER ── */
+.newsletter {
+  background: var(--teal);
+  padding: 56px 24px;
+  text-align: center;
+}
+.newsletter h2 {
+  font-family: 'Shrikhand', serif;
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.newsletter p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 24px;
+}
+.newsletter-form {
+  display: flex;
+  gap: 8px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.newsletter-form input {
+  flex: 1;
+  padding: 11px 14px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.newsletter-form input::placeholder { color: rgba(255,255,255,0.45); }
+.newsletter-form button {
+  background: #fff;
+  color: var(--teal-dk);
+  border: none;
+  border-radius: 8px;
+  padding: 11px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
 
-  /* ── SCREEN ── */
-  .screen {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
+/* ── FOOTER ── */
+footer {
+  background: var(--soil);
+  padding: 32px 24px;
+  text-align: center;
+}
+.footer-brand {
+  font-family: 'Shrikhand', serif;
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 12px;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  list-style: none;
+  margin-bottom: 20px;
+}
+.footer-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer-links a:hover { color: rgba(255,255,255,0.7); }
+.footer-copy {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.2);
+}
 
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 16px 48px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .scroll-area::-webkit-scrollbar { display: none; }
+/* ── TEST BANNER ── */
+.test-banner {
+  background: var(--alert);
+  color: #fff;
+  text-align: center;
+  padding: 7px 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 
-  /* ── BUTTONS ── */
-  .btn-primary, .btn-sky, .btn-outline {
-    border: none;
-    border-radius: 10px;
-    padding: 10px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .btn-primary { background: var(--green); color: var(--offwhite); font-weight: 600; display: inline-block; }
-  .btn-primary:active { opacity: 0.8; }
-  .btn-sky {
-    background: var(--sky);
-    color: var(--soil);
-    font-weight: 600;
-    width: 100%;
-    display: block;
-    text-align: center;
-    margin-top: 8px;
-  }
-  .btn-sky:active { opacity: 0.8; }
-  .btn-outline {
-    background: transparent;
-    color: var(--soil);
-    border: 1.5px solid rgba(26,16,8,0.16);
-    padding: 10px 16px;
-    width: 100%;
-    text-align: center;
-    display: block;
-    margin-bottom: 8px;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .btn-outline:active { border-color: var(--green); background: rgba(122,155,46,0.06); }
+/* ── DIAGNOSTIC FAB ── */
+#dbg-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  z-index: 998;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 20px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(26,16,8,0.28);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+#dbg-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,16,8,0.34); }
+#dbg-fab:active { transform: translateY(0); }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--surface);
-    border-radius: 16px;
-    padding: 14px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(26,16,8,0.07);
-  }
-  .card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.57rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ash);
-    margin-bottom: 6px;
-  }
-  .card-sub { font-size: 0.72rem; color: var(--ash); line-height: 1.55; }
-
-  /* ── QUESTION PANEL ── */
-  .diag-question { font-family: 'Playfair Display', serif; font-size: 1.22rem; color: var(--soil); line-height: 1.33; margin-bottom: 5px; }
-  .diag-sub { font-size: 0.72rem; color: var(--ash); margin-bottom: 13px; line-height: 1.5; }
-
-  .diag-option {
-    background: var(--surface);
-    border: 1.5px solid rgba(26,16,8,0.1);
-    border-radius: 13px;
-    padding: 13px 14px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-    font-size: 0.8rem;
-    color: var(--soil);
-    text-align: left;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 1px 4px rgba(26,16,8,0.05);
-  }
-  .diag-option:hover  { border-color: rgba(122,155,46,0.45); box-shadow: 0 3px 10px rgba(122,155,46,0.1); background: var(--green-lt); background: rgba(235,240,216,0.5); }
-  .diag-option:active { border-color: var(--green); background: rgba(122,155,46,0.08); box-shadow: none; }
-
-  .opt-icon {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: rgba(122,155,46,0.13);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-    flex-shrink: 0;
-  }
-  .opt-text-label { font-weight: 500; margin-bottom: 2px; }
-  .opt-text-desc  { font-size: 0.65rem; color: var(--ash); line-height: 1.4; }
-
-  /* ── RESULT CARD ── */
-  .result-card {
-    background: var(--soil);
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 10px;
-    border-top: 3px solid var(--green);
-    position: relative;
-    overflow: hidden;
-  }
-  .result-card::after {
-    content: '✓';
-    position: absolute;
-    right: 18px; top: 14px;
-    font-size: 1.4rem;
-    color: rgba(154,176,55,0.25);
-  }
-  .result-card .result-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.57rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 5px;
-  }
-  .result-card .result-title { font-family: 'Playfair Display', serif; font-size: 1.18rem; color: var(--offwhite); margin-bottom: 8px; }
-  .result-card .result-body  { font-size: 0.73rem; color: rgba(240,239,230,0.75); line-height: 1.6; }
-
-  /* ── API KEY PANEL ── */
-  .api-key-panel {
-    background: var(--surface);
-    border: 1.5px solid rgba(122,155,46,0.3);
-    border-radius: 13px;
-    padding: 14px;
-    margin-bottom: 18px;
-  }
-  .api-key-panel .ak-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.57rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--green-dk);
-    margin-bottom: 5px;
-  }
-  .api-key-panel .ak-sub { font-size: 0.68rem; color: var(--ash); margin-bottom: 10px; line-height: 1.45; }
-  .api-key-row { display: flex; gap: 8px; }
-  .api-key-input {
-    flex: 1;
-    padding: 9px 12px;
-    border: 1.5px solid rgba(26,16,8,0.13);
-    border-radius: 9px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--soil);
-    background: var(--cream);
-    outline: none;
-    min-width: 0;
-  }
-  .api-key-input:focus { border-color: var(--green); }
-
-  /* ── SKELETON ── */
-  .skeleton {
-    background: linear-gradient(90deg, rgba(26,16,8,0.06) 25%, rgba(26,16,8,0.11) 50%, rgba(26,16,8,0.06) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.3s infinite;
-    border-radius: 8px;
-  }
-  .skeleton-dk {
-    background: linear-gradient(90deg, rgba(240,239,230,0.08) 25%, rgba(240,239,230,0.14) 50%, rgba(240,239,230,0.08) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.3s infinite;
-    border-radius: 8px;
-  }
-  @keyframes shimmer {
-    0%   { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-  .sk-option { height: 64px; margin-bottom: 9px; border-radius: 13px; }
-  .sk-title  { height: 22px; border-radius: 5px; }
-  .sk-line   { height: 12px; border-radius: 4px; }
-  .w80 { width: 80%; }
-  .w60 { width: 60%; }
-  .mb8 { margin-bottom: 8px; }
-  .mb0 { margin-bottom: 0; }
-
-  /* ── GHOST BACK BUTTON ── */
-  .btn-ghost {
-    background: none;
-    border: none;
-    color: var(--ash);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.04em;
-    padding: 6px 0;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 6px;
-    transition: color 0.15s;
-  }
-  .btn-ghost:hover { color: var(--green-dk); }
-
-  /* ── AI BADGE + ERROR ── */
-  .ai-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.5rem;
-    letter-spacing: 0.07em;
-    color: var(--ash);
-    text-align: right;
-    margin-top: 2px;
-    margin-bottom: 0;
-    opacity: 0.4;
-  }
-  .diag-error {
-    background: rgba(196,90,42,0.07);
-    border: 1px solid rgba(196,90,42,0.22);
-    border-radius: 10px;
-    padding: 11px 14px;
-    font-size: 0.72rem;
-    color: var(--alert);
-    margin-bottom: 10px;
-    line-height: 1.4;
-  }
-
-  /* ── TRANSITIONS ── */
-  .fade-in { animation: fadeIn 0.2s ease both; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+#dbg-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(28,18,8,0.55);
+  align-items: center;
+  justify-content: center;
+}
+#dbg-modal.dbg-open { display: flex; }
+#dbg-frame-wrap {
+  width: 100%;
+  max-width: 480px;
+  height: 100%;
+  max-height: 100dvh;
+  background: #F4F2E8;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#dbg-iframe { flex: 1; border: none; width: 100%; height: 100%; }
 </style>
 </head>
 <body>
-<div class="app-shell">
 
-  <header class="top-nav" role="banner">
-    <div class="nav-logo" aria-label="Dropbear Grow">DROP<br>BEAR<br>GROW</div>
-    <div class="nav-text">
-      <div class="nav-title">DIAGNOSE</div>
-      <div class="nav-sub">AI SYMPTOM CHECKER</div>
+<div class="test-banner">⚠ Test Environment — dropbearslurry-del.github.io</div>
+
+<nav class="nav">
+  <div class="nav-brand">Dropbear Slurry</div>
+  <ul class="nav-links">
+    <li><a href="#products">Buy Liquid Fertiliser</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#">MSDS</a></li>
+    <li><a href="#" style="opacity:0.4">Living Soil — Coming Soon</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-cart">Cart (0)</div>
+</nav>
+
+<section class="hero">
+  <p class="hero-eyebrow">Australian made &amp; owned · Queensland</p>
+  <h1>Feed Your Plants<br>Like You Mean It</h1>
+  <p class="hero-sub">Commercial-grade liquid nutrition in a bottle built for real growers. K-666 Plant Tonic — concentrated, fast-absorbing, pH-balanced.</p>
+  <a href="#products" class="hero-cta">Shop K-666</a>
+</section>
+
+<div class="strip">Free shipping on orders over $100 · Made in Queensland · pH 6.5–6.8</div>
+
+<section class="section" id="products">
+  <p class="section-label">Liquid Fertiliser</p>
+  <h2>K-666 Plant Tonic</h2>
+  <div class="product-grid">
+
+    <div class="product-card">
+      <div class="product-img">🌿</div>
+      <div class="product-body">
+        <p class="product-tag">Home &amp; Garden</p>
+        <h3 class="product-name">K-666 Plant Tonic — 1L</h3>
+        <p class="product-desc">Same powerful formula. Starter size. Fast-absorbing phosphorus and nitrogen at pH 6.5–6.8. Perfect for pots, beds, and small plots.</p>
+        <div class="product-footer">
+          <div class="product-price"><span>AUD</span>$40.00</div>
+          <button class="btn-add">Add to Cart</button>
+        </div>
+      </div>
     </div>
-    <div class="test-badge">Test</div>
-  </header>
 
-  <div class="key-status" id="key-status">
-    <span class="key-dot" id="key-dot"></span>
-    <span class="key-text" id="key-hint">API key: not set</span>
-    <button onclick="clearKey()">Clear key</button>
+    <div class="product-card">
+      <div class="product-img">🌱</div>
+      <div class="product-body">
+        <p class="product-tag">Market Garden &amp; Farm</p>
+        <h3 class="product-name">K-666 Plant Tonic — 5L</h3>
+        <p class="product-desc">Serious nutrition for serious growers. Commercial-grade liquid fertiliser (36.5% concentrate) for market gardens, small farms, and high-output plots.</p>
+        <div class="product-footer">
+          <div class="product-price"><span>AUD</span>$170.00</div>
+          <button class="btn-add">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
   </div>
+</section>
 
-  <main class="screen" role="main">
-    <div class="scroll-area" id="diag-content">
-
-      <!-- API key panel -->
-      <div class="api-key-panel" id="api-key-panel" style="display:none">
-        <div class="ak-label">Claude API Key Required</div>
-        <div class="ak-sub">Stored in session only — never sent anywhere except Anthropic's API.</div>
-        <div class="api-key-row">
-          <input class="api-key-input" id="api-key-input" type="password" placeholder="sk-ant-…" autocomplete="off" onkeydown="if(event.key==='Enter')saveApiKey()">
-          <button class="btn-primary" onclick="saveApiKey()">Save</button>
-        </div>
-      </div>
-
-      <!-- Answer trail — chips showing prior selections -->
-      <div class="answer-trail" id="answer-trail" style="display:none"></div>
-
-      <!-- Active question panel -->
-      <div id="question-panel">
-        <div class="diag-question" id="diag-question"></div>
-        <div class="diag-sub" id="diag-sub"></div>
-        <div id="options-container"></div>
-        <button class="btn-ghost" id="back-btn" onclick="goBack()" style="display:none">← Back</button>
-        <div class="ai-badge" id="ai-badge" style="display:none">Powered by Claude</div>
-      </div>
-
-      <!-- Result panel -->
-      <div id="result-panel" style="display:none">
-        <div class="result-card">
-          <div class="result-label" id="result-label">Diagnosing…</div>
-          <div class="result-title" id="result-title">
-            <div class="skeleton-dk sk-title mb8" style="width:75%"></div>
-          </div>
-          <div class="result-body" id="result-body">
-            <div class="skeleton-dk sk-line w80 mb8"></div>
-            <div class="skeleton-dk sk-line mb8"></div>
-            <div class="skeleton-dk sk-line w60 mb0"></div>
-          </div>
-          <button class="btn-sky" id="order-btn" style="display:none">Order K-666 now →</button>
-        </div>
-        <div class="card">
-          <div class="card-label">What to do</div>
-          <div class="card-sub" id="result-action">
-            <div class="skeleton sk-line w80 mb8"></div>
-            <div class="skeleton sk-line w60 mb0"></div>
-          </div>
-        </div>
-        <div class="ai-badge">Powered by Claude</div>
-        <button class="btn-outline" onclick="resetDiag()">← Run another diagnosis</button>
-      </div>
-
+<div class="features">
+  <div class="features-inner">
+    <div>
+      <div class="feature-icon">⚗️</div>
+      <p class="feature-title">Concentrated</p>
+      <p class="feature-body">36.5% formula — a little goes a long way. Dilute and apply directly to soil or foliage.</p>
     </div>
-  </main>
-
+    <div>
+      <div class="feature-icon">🎯</div>
+      <p class="feature-title">pH Balanced</p>
+      <p class="feature-body">Formulated at pH 6.5–6.8 for maximum nutrient uptake across vegetables, herbs, and ornamentals.</p>
+    </div>
+    <div>
+      <div class="feature-icon">⚡</div>
+      <p class="feature-title">Fast Absorbing</p>
+      <p class="feature-body">Liquid application feeds fast and deep — promoting strong roots, lush foliage, and vigorous growth.</p>
+    </div>
+    <div>
+      <div class="feature-icon">🇦🇺</div>
+      <p class="feature-title">Australian Made</p>
+      <p class="feature-body">Owned and manufactured in Queensland. Not classified as hazardous. Safe for general use.</p>
+    </div>
+  </div>
 </div>
+
+<section class="section testimonial-section">
+  <div class="testimonial-inner">
+    <p class="section-label">What growers say</p>
+    <blockquote class="testimonial-quote">"Amazing products with service to match"</blockquote>
+    <p class="testimonial-source">— Ipswich, QLD</p>
+  </div>
+</section>
+
+<section class="newsletter" id="contact">
+  <h2>Get notified when living soil drops</h2>
+  <p>Be first to know when our living soil blend is ready.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="your@email.com">
+    <button type="submit">Notify Me</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">Dropbear Slurry</div>
+  <ul class="footer-links">
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#">MSDS</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#">Privacy Policy</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 Dropbear Slurry Pty Ltd. · Made in Queensland, Australia</p>
+</footer>
+
+<!-- Diagnostic FAB + Modal -->
+<button id="dbg-fab" aria-label="Diagnose my plant">🌿 Diagnose my plant</button>
+<div id="dbg-modal" role="dialog" aria-modal="true" aria-label="Plant Diagnostic">
+  <div id="dbg-frame-wrap">
+    <iframe id="dbg-iframe" src="about:blank" title="Plant Diagnostic"></iframe>
+  </div>
+</div>
+
 <script>
-(function() {
-  var STORAGE_KEY = 'dbg_ak';
+(function () {
+  var DBG_KEY = 'dbg_ak';
+  var DBG_URL = './diagnose.html';
 
-  // History: array of { question, answer }
-  var _history = [];
-  var _currentOptions = [];
-
-  // ── Static step-1 categories (no API call) ─────────────────────────────────
-  var STATIC_CATEGORIES = [
-    { icon: '🌿', label: 'Yellowing leaves',       description: 'Leaves turning pale, yellow, or losing colour' },
-    { icon: '🥀', label: 'Wilting or drooping',    description: 'Plant has lost structure or looks limp' },
-    { icon: '🍂', label: 'Brown spots or edges',   description: 'Leaf tips, edges, or patches turning brown' },
-    { icon: '🌱', label: 'Slow or stunted growth', description: 'Not growing or developing as expected' },
-    { icon: '🐛', label: 'Pests or bugs',          description: 'Visible insects, sticky residue, or chew damage' },
-    { icon: '💧', label: 'Root or soil concerns',  description: 'Overwatering, drainage, or root rot suspected' },
-  ];
-
-  // ── Key management ────────────────────────────────────────────────────────
-
-  function getApiKey() { return sessionStorage.getItem(STORAGE_KEY) || ''; }
-
-  function _updateKeyStatus() {
-    var key = getApiKey();
-    document.getElementById('key-dot').className = 'key-dot' + (key ? '' : ' off');
-    document.getElementById('key-hint').textContent = key
-      ? 'API key: ' + key.slice(0, 18) + '…'
-      : 'No API key — enter one below';
-  }
-
-  function saveApiKey() {
-    var val = (document.getElementById('api-key-input').value || '').trim();
-    if (!val) return;
-    sessionStorage.setItem(STORAGE_KEY, val);
-    document.getElementById('api-key-panel').style.display = 'none';
-    _updateKeyStatus();
-    askNext();
-  }
-
-  function clearKey() {
-    sessionStorage.removeItem(STORAGE_KEY);
-    _updateKeyStatus();
-    resetDiag();
-    document.getElementById('api-key-panel').style.display = 'block';
-  }
-
-  function _ensureApiKey() {
-    if (getApiKey()) return true;
-    document.getElementById('api-key-panel').style.display = 'block';
-    document.getElementById('diag-content').scrollTop = 0;
-    return false;
-  }
-
-  // ── Claude API ─────────────────────────────────────────────────────────────
-
-  var SYSTEM = 'You are a plant health diagnostic assistant for Dropbear Grow, makers of K-666 Plant Tonic'
-    + ' — a balanced NPK liquid fertiliser with micronutrients, pH 6.2–6.8, for vegetables, herbs, and ornamentals.'
-    + ' Ask as many follow-up questions as needed to reach a confident diagnosis — no fixed limit.'
-    + ' When you have enough information, return a diagnosis instead of another question.'
-    + ' CRITICAL: output raw JSON only. No markdown. No code fences. No backticks. No extra text before or after. Start your response with { and end with }.';
-
-  async function _callClaude(userPrompt) {
-    var resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': getApiKey(),
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 800,
-        system: SYSTEM,
-        messages: [{ role: 'user', content: userPrompt }]
-      })
-    });
-    if (!resp.ok) {
-      var err = await resp.json().catch(function() { return {}; });
-      throw new Error((err.error && err.error.message) || 'API error ' + resp.status);
-    }
-    var data = await resp.json();
-    var text = data.content[0].text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
-    return JSON.parse(text);
-  }
-
-  // ── UI helpers ─────────────────────────────────────────────────────────────
-
-  function _skeletons(n) {
-    var h = '';
-    for (var i = 0; i < n; i++) h += '<div class="skeleton sk-option"></div>';
-    return h;
-  }
-
-  function _renderOptions(options, onClickName) {
-    return options.map(function(opt, i) {
-      return '<button class="diag-option fade-in" onclick="' + onClickName + '(' + i + ')">'
-        + '<div class="opt-icon">' + opt.icon + '</div>'
-        + '<div><div class="opt-text-label">' + opt.label + '</div>'
-        + '<div class="opt-text-desc">' + opt.description + '</div></div>'
-        + '</button>';
-    }).join('');
-  }
-
-  function _showError(container, msg) {
-    container.innerHTML = '<div class="diag-error">' + msg + '</div>'
-      + '<button class="btn-outline" onclick="resetDiag()">← Start over</button>';
-  }
-
-  function _setLoading() {
-    document.getElementById('diag-question').innerHTML =
-      '<div class="skeleton sk-title mb8" style="width:85%"></div>';
-    document.getElementById('diag-sub').innerHTML =
-      '<div class="skeleton sk-line w80 mb8"></div>';
-    document.getElementById('options-container').innerHTML = _skeletons(3);
-  }
-
-  function _updateTrail() {
-    var trail = document.getElementById('answer-trail');
-    if (_history.length === 0) {
-      trail.style.display = 'none';
-      trail.innerHTML = '';
-      return;
-    }
-    trail.style.display = 'flex';
-    trail.innerHTML = _history.map(function(h) {
-      return '<span class="trail-chip">' + h.answer + '</span>';
-    }).join('');
-  }
-
-  // ── Static step 1 ─────────────────────────────────────────────────────────
-
-  function _showStaticCategories() {
-    document.getElementById('question-panel').style.display = 'block';
-    document.getElementById('result-panel').style.display   = 'none';
-    document.getElementById('back-btn').style.display       = 'none';
-    document.getElementById('ai-badge').style.display       = 'none';
-    document.getElementById('diag-content').scrollTop       = 0;
-
-    _currentOptions = STATIC_CATEGORIES;
-    document.getElementById('diag-question').textContent = "What's your main concern?";
-    document.getElementById('diag-sub').textContent      = "Select the symptom that best describes what you're seeing.";
-    document.getElementById('options-container').innerHTML =
-      _renderOptions(STATIC_CATEGORIES, 'onOptionSelect');
-  }
-
-  // ── Core ask loop (step 2+) ────────────────────────────────────────────────
-
-  async function askNext() {
-    if (!_ensureApiKey()) return;
-
-    document.getElementById('question-panel').style.display = 'block';
-    document.getElementById('result-panel').style.display   = 'none';
-    document.getElementById('back-btn').style.display       = 'block';
-    document.getElementById('ai-badge').style.display       = 'block';
-    document.getElementById('diag-content').scrollTop       = 0;
-
-    _setLoading();
-
-    var historyLines = _history.map(function(h, i) {
-      return 'Q' + (i + 1) + ': ' + h.question + '\nA' + (i + 1) + ': ' + h.answer;
-    }).join('\n\n');
-
-    var MAX_STEPS = 10;
-    var forceResult = _history.length >= MAX_STEPS;
-
-    var prompt = 'Diagnostic history so far:\n' + historyLines + '\n\n'
-      + (forceResult
-          ? 'You have reached the maximum number of questions. You MUST now return a diagnosis — do NOT ask another question.\n\n'
-          : 'Based on this, either ask one more targeted follow-up question OR provide a diagnosis if you have enough information.\n\n'
-            + 'If asking a follow-up, return:\n'
-            + '{ "type": "question", "question": "...", "sub": "...", "options": [ { "icon": "emoji", "label": "...", "description": "..." } ] }\n'
-            + 'Return 2-5 options as needed — use exactly as many as are genuinely distinct and useful.\n\n')
-      + 'If ready to diagnose, return:\n'
-      + '{ "type": "result", "label": "Diagnosis category", "title": "Specific diagnosis name", "body": "2-3 sentence explanation mentioning K-666 if relevant.", "action": "2-3 concrete steps including K-666 application rate if helpful." }';
-
-    try {
-      var parsed = await _callClaude(prompt);
-
-      if (parsed.type === 'result') {
-        _showResult(parsed);
-        return;
-      }
-
-      // Show AI question
-      _currentOptions = parsed.options;
-      document.getElementById('diag-question').textContent = parsed.question;
-      document.getElementById('diag-sub').textContent      = parsed.sub;
-      document.getElementById('options-container').innerHTML =
-        _renderOptions(parsed.options, 'onOptionSelect');
-
-    } catch (e) {
-      document.getElementById('diag-question').textContent = 'Something went wrong';
-      document.getElementById('diag-sub').textContent = '';
-      _showError(document.getElementById('options-container'), e.message);
-    }
-  }
-
-  function onOptionSelect(i) {
-    var label = (_currentOptions[i] || {}).label || String(i);
-    var question = document.getElementById('diag-question').textContent;
-    _history.push({ question: question, answer: label });
-    _updateTrail();
-    askNext();
-  }
-
-  function _showResult(parsed) {
-    document.getElementById('question-panel').style.display = 'none';
-    document.getElementById('result-panel').style.display   = 'block';
-    document.getElementById('diag-content').scrollTop = 0;
-
-    var labelEl  = document.getElementById('result-label');
-    var titleEl  = document.getElementById('result-title');
-    var bodyEl   = document.getElementById('result-body');
-    var actionEl = document.getElementById('result-action');
-
-    labelEl.textContent  = parsed.label;
-    titleEl.textContent  = parsed.title;
-    bodyEl.textContent   = parsed.body;
-    actionEl.textContent = parsed.action;
-    document.getElementById('order-btn').style.display = 'block';
-  }
-
-  // ── Navigation ─────────────────────────────────────────────────────────────
-
-  function goBack() {
-    if (_history.length === 0) return;
-    _history.pop();
-    _updateTrail();
-    if (_history.length === 0) {
-      _showStaticCategories();
-    } else {
-      askNext();
-    }
-  }
-
-  function resetDiag() {
-    _history        = [];
-    _currentOptions = [];
-    _updateTrail();
-    _showStaticCategories();
-  }
-
-  // ── Init ──────────────────────────────────────────────────────────────────
-
+  // Seed API key from URL fragment: /#key=sk-ant-...
   (function seedKey() {
-    // Load API key from URL fragment: diagnose.html#key=sk-ant-...
     var hash = window.location.hash;
     if (hash && hash.indexOf('#key=') === 0) {
-      var keyFromUrl = hash.slice(5);
-      if (keyFromUrl) sessionStorage.setItem(STORAGE_KEY, keyFromUrl);
-      // Remove key from URL bar without reload
+      var k = hash.slice(5);
+      if (k) sessionStorage.setItem(DBG_KEY, k);
       history.replaceState(null, '', window.location.pathname + window.location.search);
     }
   })();
 
-  _updateKeyStatus();
-  _showStaticCategories();
-
-  // Expose for inline onclick
-  window.onOptionSelect = onOptionSelect;
-  window.goBack         = goBack;
-  window.resetDiag      = resetDiag;
-  window.saveApiKey     = saveApiKey;
-  window.clearKey       = clearKey;
+  function openDiag() {
+    var key = sessionStorage.getItem(DBG_KEY) || '';
+    document.getElementById('dbg-iframe').src = DBG_URL + '#key=' + encodeURIComponent(key);
+    document.getElementById('dbg-modal').classList.add('dbg-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDiag() {
+    document.getElementById('dbg-modal').classList.remove('dbg-open');
+    document.getElementById('dbg-iframe').src = 'about:blank';
+    document.body.style.overflow = '';
+  }
+  document.getElementById('dbg-fab').onclick = openDiag;
+  document.getElementById('dbg-modal').addEventListener('click', function (e) {
+    if (e.target === this) closeDiag();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeDiag();
+  });
 })();
 </script>
+
 </body>
 </html>
