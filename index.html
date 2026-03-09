@@ -615,11 +615,16 @@
       return 'Q' + (i + 1) + ': ' + h.question + '\nA' + (i + 1) + ': ' + h.answer;
     }).join('\n\n');
 
+    var MAX_STEPS = 10;
+    var forceResult = _history.length >= MAX_STEPS;
+
     var prompt = 'Diagnostic history so far:\n' + historyLines + '\n\n'
-      + 'Based on this, either ask one more targeted follow-up question OR provide a diagnosis if you have enough information.\n\n'
-      + 'If asking a follow-up, return:\n'
-      + '{ "type": "question", "question": "...", "sub": "...", "options": [ { "icon": "emoji", "label": "...", "description": "..." } ] }\n'
-      + 'Return 2-5 options as needed — use exactly as many as are genuinely distinct and useful.\n\n'
+      + (forceResult
+          ? 'You have reached the maximum number of questions. You MUST now return a diagnosis — do NOT ask another question.\n\n'
+          : 'Based on this, either ask one more targeted follow-up question OR provide a diagnosis if you have enough information.\n\n'
+            + 'If asking a follow-up, return:\n'
+            + '{ "type": "question", "question": "...", "sub": "...", "options": [ { "icon": "emoji", "label": "...", "description": "..." } ] }\n'
+            + 'Return 2-5 options as needed — use exactly as many as are genuinely distinct and useful.\n\n')
       + 'If ready to diagnose, return:\n'
       + '{ "type": "result", "label": "Diagnosis category", "title": "Specific diagnosis name", "body": "2-3 sentence explanation mentioning K-666 if relevant.", "action": "2-3 concrete steps including K-666 application rate if helpful." }';
 
