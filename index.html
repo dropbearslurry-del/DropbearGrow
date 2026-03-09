@@ -170,11 +170,32 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
 .product-card:hover { box-shadow: 0 8px 32px rgba(60,98,103,0.14); transform: translateY(-2px); }
 .product-img {
   background: var(--teal-lt);
-  height: 200px;
+  height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
+  overflow: hidden;
+}
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  transition: transform 0.35s ease;
+}
+.product-card:hover .product-img img { transform: scale(1.05); }
+.product-coming-soon {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  background: rgba(60,98,103,0.08);
+  border: 1px solid rgba(60,98,103,0.18);
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: default;
 }
 .product-body { padding: 20px; }
 .product-tag {
@@ -435,7 +456,7 @@ footer {
     <li><a href="#products">Buy Liquid Fertiliser</a></li>
     <li><a href="#about">About Us</a></li>
     <li><a href="#">MSDS</a></li>
-    <li><a href="#" style="opacity:0.4">Living Soil — Coming Soon</a></li>
+    <li><a href="#soil" style="opacity:0.4">Living Soil — Coming Soon</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-cart">Cart (0)</div>
@@ -451,16 +472,18 @@ footer {
 <div class="strip">Free shipping on orders over $100 · Made in Queensland · pH 6.5–6.8</div>
 
 <section class="section" id="products">
-  <p class="section-label">Liquid Fertiliser</p>
-  <h2>K-666 Plant Tonic</h2>
+  <p class="section-label">Fertiliser</p>
+  <h2>Tonics</h2>
   <div class="product-grid">
 
     <div class="product-card">
-      <div class="product-img">🌿</div>
+      <div class="product-img">
+        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/549bb5bfbad951c7b68a4c02c8790d323461d5a9/original.png" alt="K-666 Plant Tonic 1L — front">
+      </div>
       <div class="product-body">
-        <p class="product-tag">Home &amp; Garden</p>
+        <p class="product-tag">Tonics</p>
         <h3 class="product-name">K-666 Plant Tonic — 1L</h3>
-        <p class="product-desc">Same powerful formula. Starter size. Fast-absorbing phosphorus and nitrogen at pH 6.5–6.8. Perfect for pots, beds, and small plots.</p>
+        <p class="product-desc">Same powerful formula. Starter size. Ideal for pots, beds, and small plots. Fast-absorbing phosphorus &amp; nitrogen at pH 6.5–6.8.</p>
         <div class="product-footer">
           <div class="product-price"><span>AUD</span>$40.00</div>
           <button class="btn-add">Add to Cart</button>
@@ -469,14 +492,54 @@ footer {
     </div>
 
     <div class="product-card">
-      <div class="product-img">🌱</div>
+      <div class="product-img">
+        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/98aa443d53148b9f23dc3e2f593fb0bd7a6e8d40/original.png" alt="K-333 Plant Tonic 1L — front">
+      </div>
       <div class="product-body">
-        <p class="product-tag">Market Garden &amp; Farm</p>
+        <p class="product-tag">Tonics</p>
+        <h3 class="product-name">K-333 Plant Tonic — 1L</h3>
+        <p class="product-desc">Gentle yet powerful. Baby plant &amp; cutting approved. Lower potassium silicate for sensitive or newer plants. pH 6.5–6.8.</p>
+        <div class="product-footer">
+          <div class="product-price"><span>AUD</span>$40.00</div>
+          <button class="btn-add">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 Plant Tonic 5L — front">
+      </div>
+      <div class="product-body">
+        <p class="product-tag">Tonics</p>
         <h3 class="product-name">K-666 Plant Tonic — 5L</h3>
-        <p class="product-desc">Serious nutrition for serious growers. Commercial-grade liquid fertiliser (36.5% concentrate) for market gardens, small farms, and high-output plots.</p>
+        <p class="product-desc">Serious nutrition for serious growers. Commercial-grade (36.5% concentrate) for market gardens, small farms, and high-output plots.</p>
         <div class="product-footer">
           <div class="product-price"><span>AUD</span>$170.00</div>
           <button class="btn-add">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="soil" style="padding-top: 0;">
+  <p class="section-label">Coming Soon</p>
+  <h2>Soil</h2>
+  <div class="product-grid" style="max-width: 340px;">
+
+    <div class="product-card">
+      <div class="product-img" style="background: #2D2215;">
+        <span style="font-size:3.2rem">🪴</span>
+      </div>
+      <div class="product-body">
+        <p class="product-tag">Soil</p>
+        <h3 class="product-name">Premium Soil</h3>
+        <p class="product-desc">Good things take time to grow. A premium blend designed to give your plants the foundation they deserve. Australian owned, made in Queensland.</p>
+        <div class="product-footer">
+          <div class="product-price"><span>AUD</span>—</div>
+          <span class="product-coming-soon">Coming Soon</span>
         </div>
       </div>
     </div>
