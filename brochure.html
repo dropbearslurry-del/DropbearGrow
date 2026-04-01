@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropbear Slurry — Brochure</title>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --teal:    #3C6267;
+  --teal-dk: #2A464A;
+  --teal-lt: #D4E8EA;
+  --cream:   #F5F0E8;
+  --offwhite:#FAFAF5;
+  --soil:    #1C1208;
+  --ash:     #6B7B7D;
+  --alert:   #C45A2A;
+  --green:   #7A9B2E;
+}
+
+/* ── SCREEN WRAPPER ── */
+html, body {
+  background: #c8c4bb;
+  font-family: 'IBM Plex Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 32px 16px 48px;
+  gap: 16px;
+  color: var(--soil);
+}
+
+.screen-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.35);
+  text-align: center;
+}
+
+/* ── BROCHURE SHELL ── */
+/* A4 landscape = 297mm × 210mm → at 96dpi ≈ 1122 × 793px */
+/* Tri-fold: three equal panels of 374px × 793px */
+.brochure {
+  width: 1122px;
+  height: 793px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.35);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* fold guides */
+.brochure::before,
+.brochure::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(0,0,0,0.08);
+  pointer-events: none;
+  z-index: 10;
+}
+.brochure::before { left: 374px; }
+.brochure::after  { left: 748px; }
+
+/* ── SHARED PANEL BASE ── */
+.panel {
+  height: 793px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════
+   PANEL 1 — COVER (right panel of closed brochure)
+   ═══════════════════════════════════════ */
+.panel-cover {
+  background: var(--teal-dk);
+  position: relative;
+  justify-content: space-between;
+  padding: 0;
+}
+
+/* decorative radial glow */
+.panel-cover::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: -80px;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(212,232,234,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.cover-top {
+  padding: 36px 32px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+.cover-logo img {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+.cover-logo-name {
+  font-family: 'Shrikhand', serif;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.02em;
+}
+
+.cover-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--teal-lt);
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.cover-headline {
+  font-family: 'Shrikhand', serif;
+  font-size: 2.8rem;
+  color: #fff;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  margin-bottom: 20px;
+}
+
+.cover-sub {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.62);
+  line-height: 1.65;
+  max-width: 280px;
+}
+
+/* big product bottle silhouette */
+.cover-img-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex: 1;
+  padding-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+.cover-img-wrap img {
+  width: 210px;
+  object-fit: contain;
+  filter: drop-shadow(0 -8px 32px rgba(0,0,0,0.5));
+  display: block;
+}
+
+.cover-bottom {
+  background: var(--soil);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.cover-made {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.cover-ph {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-lt);
+  opacity: 0.6;
+}
+
+/* ═══════════════════════════════════════
+   PANEL 2 — PRODUCTS (middle inside panel)
+   ═══════════════════════════════════════ */
+.panel-products {
+  background: var(--cream);
+  padding: 40px 28px;
+  gap: 0;
+}
+
+.panel-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.panel-heading {
+  font-family: 'Shrikhand', serif;
+  font-size: 1.7rem;
+  color: var(--soil);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.product-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+.product-thumb {
+  width: 76px;
+  height: 96px;
+  background: var(--teal-lt);
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+}
+.product-info { flex: 1; }
+.product-sku {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 3px;
+}
+.product-title {
+  font-family: 'Shrikhand', serif;
+  font-size: 1.05rem;
+  color: var(--soil);
+  margin-bottom: 5px;
+  line-height: 1.15;
+}
+.product-blurb {
+  font-size: 0.7rem;
+  color: var(--ash);
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+.product-price-row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.product-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--soil);
+}
+.product-size {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.54rem;
+  color: var(--ash);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.panel-divider {
+  border: none;
+  border-top: 1px solid rgba(60,98,103,0.15);
+  margin: 20px 0;
+}
+
+/* dosage table */
+.dose-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.66rem;
+}
+.dose-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  border-bottom: 1px solid rgba(60,98,103,0.2);
+  padding: 4px 0;
+  text-align: left;
+}
+.dose-table td {
+  padding: 5px 0;
+  color: var(--ash);
+  border-bottom: 1px solid rgba(60,98,103,0.07);
+  vertical-align: top;
+}
+.dose-table td:last-child {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--soil);
+  font-size: 0.62rem;
+}
+
+/* ═══════════════════════════════════════
+   PANEL 3 — ABOUT + FEATURES (left inside panel)
+   ═══════════════════════════════════════ */
+.panel-about {
+  background: var(--offwhite);
+  padding: 0;
+  justify-content: space-between;
+}
+
+.about-top {
+  padding: 40px 28px 28px;
+  flex: 1;
+}
+
+.about-body {
+  font-size: 0.76rem;
+  color: var(--ash);
+  line-height: 1.72;
+}
+.about-body p + p { margin-top: 12px; }
+.about-body strong { color: var(--soil); font-weight: 600; }
+
+.about-quote {
+  background: var(--teal-lt);
+  border-left: 3px solid var(--teal);
+  padding: 16px 18px;
+  margin-top: 22px;
+  border-radius: 0 6px 6px 0;
+}
+.about-quote p {
+  font-family: 'Shrikhand', serif;
+  font-size: 0.95rem;
+  color: var(--teal-dk);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.about-quote cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  font-style: normal;
+}
+
+/* features strip */
+.features-strip {
+  background: var(--teal-dk);
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  flex-shrink: 0;
+}
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.feature-icon { font-size: 1.1rem; margin-bottom: 2px; }
+.feature-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-lt);
+}
+.feature-body {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.45;
+}
+
+/* entity block at bottom */
+.entity-strip {
+  background: var(--soil);
+  padding: 14px 28px;
+  flex-shrink: 0;
+}
+.entity-strip p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.7;
+}
+.entity-strip strong { color: rgba(255,255,255,0.55); }
+
+
+/* ── BACK-OF-BROCHURE LABEL ── */
+.brochure-back {
+  width: 1122px;
+  height: 793px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.35);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.brochure-back::before,
+.brochure-back::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(0,0,0,0.08);
+  pointer-events: none;
+  z-index: 10;
+}
+.brochure-back::before { left: 374px; }
+.brochure-back::after  { left: 748px; }
+
+/* back panel A — contact + address */
+.panel-contact {
+  background: var(--cream);
+  padding: 40px 28px;
+  gap: 0;
+  justify-content: space-between;
+}
+
+.contact-block { flex: 1; }
+
+.contact-section { margin-bottom: 28px; }
+.contact-section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(60,98,103,0.2);
+  padding-bottom: 5px;
+}
+.contact-section p,
+.contact-section address {
+  font-style: normal;
+  font-size: 0.75rem;
+  color: var(--ash);
+  line-height: 1.65;
+}
+.contact-section a {
+  color: var(--teal);
+  text-decoration: none;
+}
+
+.qr-placeholder {
+  width: 80px; height: 80px;
+  border: 2px solid rgba(60,98,103,0.25);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 16px;
+}
+.qr-placeholder span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.45rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ash);
+  opacity: 0.6;
+  text-align: center;
+}
+.qr-inner {
+  display: grid;
+  grid-template-columns: repeat(5, 8px);
+  grid-template-rows: repeat(5, 8px);
+  gap: 1px;
+}
+.qr-inner div { background: var(--teal-dk); border-radius: 1px; }
+.qr-inner div.off { background: transparent; border: 1px solid rgba(60,98,103,0.15); }
+
+/* back panel B — MSDS summary */
+.panel-msds {
+  background: var(--offwhite);
+  padding: 40px 28px;
+}
+
+.msds-warning {
+  background: #fff3ee;
+  border: 1px solid rgba(196,90,42,0.25);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.msds-warning-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.msds-warning-text {
+  font-size: 0.68rem;
+  color: var(--alert);
+  line-height: 1.5;
+}
+.msds-warning-text strong {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.msds-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(60,98,103,0.08);
+  font-size: 0.68rem;
+}
+.msds-row:last-child { border-bottom: none; }
+.msds-key {
+  color: var(--ash);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.msds-val {
+  color: var(--soil);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  text-align: right;
+}
+
+/* back panel C — tips / application guide */
+.panel-tips {
+  background: var(--teal);
+  padding: 40px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.panel-tips::before {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.panel-tips .panel-label { color: var(--teal-lt); opacity: 0.8; }
+.panel-tips .panel-heading { color: #fff; font-size: 1.5rem; }
+
+.tip {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  align-items: flex-start;
+}
+.tip-num {
+  font-family: 'Shrikhand', serif;
+  font-size: 1.6rem;
+  color: rgba(255,255,255,0.15);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 26px;
+}
+.tip-content {}
+.tip-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-lt);
+  margin-bottom: 3px;
+}
+.tip-body {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.5;
+}
+
+.tip-note {
+  margin-top: auto;
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 12px 14px;
+  position: relative;
+  z-index: 1;
+}
+.tip-note p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+}
+
+/* ── PRINT ── */
+@media print {
+  html, body {
+    background: white;
+    padding: 0;
+  }
+  .screen-label { display: none; }
+  .brochure, .brochure-back {
+    box-shadow: none;
+    border-radius: 0;
+    page-break-after: always;
+    width: 297mm;
+    height: 210mm;
+  }
+}
+</style>
+</head>
+<body>
+
+<p class="screen-label">Inside spread (open)</p>
+
+<!-- ══════════════════════════════════════════════════
+     FRONT / INSIDE SPREAD
+     Panel order left-to-right when brochure is open:
+     [About+Features] [Products] [Cover]
+     ══════════════════════════════════════════════════ -->
+<div class="brochure">
+
+  <!-- PANEL 3 — About + Features (left inside) -->
+  <div class="panel panel-about">
+    <div class="about-top">
+      <p class="panel-label">About Us</p>
+      <h2 class="panel-heading" style="font-size:1.4rem;margin-bottom:18px;">Built for Growers,<br>Not Shelves</h2>
+
+      <div class="about-body">
+        <p>Dropbear Slurry started with a simple idea: growers deserve access to the same commercial-grade nutrition that professionals use — without the industrial minimums or the marketing fluff.</p>
+        <p>Based in <strong>Ipswich, Queensland</strong>, our fertiliser products penetrate the soil effectively, minimising nutrient runoff and maximising uptake at every growth stage — in soil and hydroponics alike.</p>
+        <p>Our formulations sit at <strong>pH 6.5–6.8</strong>, a sweet spot for flowering crops and food plants alike. Use <strong>K-333</strong> on younger plants, switch to <strong>K-666</strong> when it's time to push flowering and harvest.</p>
+      </div>
+
+      <div class="about-quote">
+        <p>"Amazing products with service to match"</p>
+        <cite>— Verified customer, Ipswich QLD</cite>
+      </div>
+    </div>
+
+    <div class="features-strip">
+      <div class="feature">
+        <div class="feature-icon">⚗️</div>
+        <p class="feature-title">Concentrated</p>
+        <p class="feature-body">36.5% formula. A little goes a long way.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <p class="feature-title">pH Balanced</p>
+        <p class="feature-body">6.5–6.8 — optimal for nutrient uptake.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <p class="feature-title">Fast Absorbing</p>
+        <p class="feature-body">Liquid feeds fast — roots and foliage.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🇦🇺</div>
+        <p class="feature-title">Australian Made</p>
+        <p class="feature-body">Owned &amp; manufactured in Queensland.</p>
+      </div>
+    </div>
+
+    <div class="entity-strip">
+      <p><strong>Dropbear Slurry Pty Ltd.</strong> · ABN 84 694 072 952 · Ipswich QLD · dropbearslurry.com.au</p>
+    </div>
+  </div>
+
+  <!-- PANEL 2 — Products (centre inside) -->
+  <div class="panel panel-products">
+    <p class="panel-label">Our Tonics</p>
+    <h2 class="panel-heading">Plant Tonic<br>Range</h2>
+
+    <div class="product-row">
+      <div class="product-thumb">
+        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/98aa443d53148b9f23dc3e2f593fb0bd7a6e8d40/original.png" alt="K-333 Plant Tonic">
+      </div>
+      <div class="product-info">
+        <p class="product-sku">K-333 · Tonics</p>
+        <h3 class="product-title">K-333 Plant Tonic</h3>
+        <p class="product-blurb">Gentler formula for seedlings, cuttings, and sensitive species. Lower potassium silicate — safe for new growth from day one.</p>
+        <div class="product-price-row">
+          <span class="product-price">$40.00</span>
+          <span class="product-size">AUD · 1L</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="product-thumb">
+        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/549bb5bfbad951c7b68a4c02c8790d323461d5a9/original.png" alt="K-666 Plant Tonic 1L">
+      </div>
+      <div class="product-info">
+        <p class="product-sku">K-666 · Tonics</p>
+        <h3 class="product-title">K-666 Plant Tonic — 1L</h3>
+        <p class="product-blurb">Full-strength commercial-grade nutrition. Fast-absorbing phosphorus &amp; nitrogen. Ideal for established plants and heavy feeders.</p>
+        <div class="product-price-row">
+          <span class="product-price">$40.00</span>
+          <span class="product-size">AUD · 1L</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-row">
+      <div class="product-thumb">
+        <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 Plant Tonic 5L">
+      </div>
+      <div class="product-info">
+        <p class="product-sku">K-666 · Tonics · Bulk</p>
+        <h3 class="product-title">K-666 Plant Tonic — 5L</h3>
+        <p class="product-blurb">Serious nutrition for serious growers. Commercial volume for market gardens, small farms, and high-output plots.</p>
+        <div class="product-price-row">
+          <span class="product-price">$170.00</span>
+          <span class="product-size">AUD · 5L</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="panel-divider">
+
+    <p class="panel-label" style="margin-bottom:8px;">Application Guide</p>
+    <table class="dose-table">
+      <thead>
+        <tr>
+          <th>Use</th>
+          <th>Dilution</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Seedlings / cuttings</td>
+          <td>1:500</td>
+          <td>Weekly</td>
+        </tr>
+        <tr>
+          <td>Established plants</td>
+          <td>1:250</td>
+          <td>Fortnightly</td>
+        </tr>
+        <tr>
+          <td>Heavy feeders</td>
+          <td>1:100</td>
+          <td>Weekly</td>
+        </tr>
+        <tr>
+          <td>Foliar spray</td>
+          <td>1:500</td>
+          <td>As needed</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PANEL 1 — Cover (right panel, visible when closed) -->
+  <div class="panel panel-cover">
+    <div class="cover-top">
+      <div class="cover-logo">
+        <img src="https://e1f68bafd7fbe1380bca.cdn6.editmysite.com/uploads/b/e1f68bafd7fbe1380bca063216c569f9a2c974a8871abc6a40a3ca64f22f6d04/Labelling%20%28No%20Rating%29transparencytest_1768180409.png" alt="Dropbear Slurry logo">
+        <span class="cover-logo-name">Dropbear Slurry</span>
+      </div>
+
+      <p class="cover-eyebrow">Australian Made &amp; Owned · Queensland</p>
+      <h1 class="cover-headline">Feed Your<br>Plants Like<br>You Mean It</h1>
+      <p class="cover-sub">Commercial-grade liquid nutrition for real growers. K-666 and K-333 Plant Tonics — concentrated, fast-absorbing, pH-balanced.</p>
+    </div>
+
+    <div class="cover-img-wrap">
+      <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 5L Plant Tonic">
+    </div>
+
+    <div class="cover-bottom">
+      <span class="cover-made">Made in Queensland</span>
+      <span class="cover-ph">pH 6.5 – 6.8</span>
+    </div>
+  </div>
+
+</div><!-- /brochure -->
+
+
+<!-- ══════════════════════════════════════════════════
+     BACK SPREAD
+     When folded, order left-to-right:
+     [Back flap / tips] [MSDS summary] [Contact / mailing panel]
+     ══════════════════════════════════════════════════ -->
+<p class="screen-label" style="margin-top:24px;">Outside / back spread</p>
+
+<div class="brochure-back">
+
+  <!-- PANEL A — Growing Tips (left outer) -->
+  <div class="panel panel-tips" style="display:flex;flex-direction:column;justify-content:flex-start;padding:40px 28px;">
+    <p class="panel-label">Application Guide</p>
+    <h2 class="panel-heading">5 Tips for Better Results</h2>
+
+    <div class="tip">
+      <span class="tip-num">1</span>
+      <div class="tip-content">
+        <p class="tip-title">Start with K-333</p>
+        <p class="tip-body">Always begin seedlings and new cuttings on the gentler K-333 formula before graduating to K-666.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-num">2</span>
+      <div class="tip-content">
+        <p class="tip-title">Dilute correctly</p>
+        <p class="tip-body">Never apply at full concentration. Start at 1:500 and adjust based on plant response over 2–3 waterings.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-num">3</span>
+      <div class="tip-content">
+        <p class="tip-title">Water first</p>
+        <p class="tip-body">Apply diluted tonic to pre-moistened soil. Reduces root shock and improves uptake efficiency.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-num">4</span>
+      <div class="tip-content">
+        <p class="tip-title">Foliar feeding</p>
+        <p class="tip-body">A 1:500 spray direct to leaves accelerates uptake — great for fast-growing crops and deficiency correction.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-num">5</span>
+      <div class="tip-content">
+        <p class="tip-title">Switch at flowering</p>
+        <p class="tip-body">Transition to K-666 once plants enter the flowering stage to maximise bud set and fruiting.</p>
+      </div>
+    </div>
+
+    <div class="tip-note" style="margin-top:auto;">
+      <p>10L and above available on request. Contact us for commercial pricing and bulk enquiries.</p>
+    </div>
+  </div>
+
+  <!-- PANEL B — MSDS summary (centre back) -->
+  <div class="panel panel-msds">
+    <p class="panel-label">Safety Data</p>
+    <h2 class="panel-heading" style="margin-bottom:18px;">MSDS Summary</h2>
+
+    <div class="msds-warning">
+      <span class="msds-warning-icon">⚠️</span>
+      <div class="msds-warning-text">
+        <strong>Not Classified as Hazardous</strong>
+        Not classified as a Dangerous Good under the Australian Code for the Transport of Dangerous Goods by Road and Rail.
+      </div>
+    </div>
+
+    <div class="msds-row">
+      <span class="msds-key">Product</span>
+      <span class="msds-val">K-666 / K-333 Plant Tonic</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">Form</span>
+      <span class="msds-val">Liquid concentrate</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">pH</span>
+      <span class="msds-val">6.5 – 6.8</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">Hazard class</span>
+      <span class="msds-val">Not classified</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">Flammability</span>
+      <span class="msds-val">Non-flammable</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">PPE required</span>
+      <span class="msds-val">Gloves recommended</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">Storage</span>
+      <span class="msds-val">Cool, dry, out of sunlight</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">Disposal</span>
+      <span class="msds-val">Dilute &amp; drain to garden</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">First aid (skin)</span>
+      <span class="msds-val">Wash with water</span>
+    </div>
+    <div class="msds-row">
+      <span class="msds-key">First aid (eyes)</span>
+      <span class="msds-val">Flush 15 min, seek advice</span>
+    </div>
+
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:0.52rem;letter-spacing:0.06em;color:var(--ash);margin-top:18px;line-height:1.6;">
+      Full MSDS available at dropbearslurry.com.au/msds · Always read label before use.
+    </p>
+  </div>
+
+  <!-- PANEL C — Contact / mailing panel (right outer — address side) -->
+  <div class="panel panel-contact">
+    <div class="contact-block">
+      <div class="cover-logo" style="margin-bottom:28px;">
+        <img src="https://e1f68bafd7fbe1380bca.cdn6.editmysite.com/uploads/b/e1f68bafd7fbe1380bca063216c569f9a2c974a8871abc6a40a3ca64f22f6d04/Labelling%20%28No%20Rating%29transparencytest_1768180409.png" alt="Dropbear Slurry logo" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(60,98,103,0.3);">
+        <span style="font-family:'Shrikhand',serif;font-size:1rem;color:var(--teal-dk);letter-spacing:0.02em;">Dropbear Slurry</span>
+      </div>
+
+      <div class="contact-section">
+        <p class="contact-section-label">Our Location</p>
+        <address>
+          Dropbear Slurry Pty Ltd.<br>
+          Ipswich, Queensland<br>
+          Australia
+        </address>
+      </div>
+
+      <div class="contact-section">
+        <p class="contact-section-label">Order Online</p>
+        <p><a href="#">dropbearslurry.com.au</a></p>
+      </div>
+
+      <div class="contact-section">
+        <p class="contact-section-label">Get in Touch</p>
+        <p>
+          hello@dropbearslurry.com.au<br>
+          <span style="font-size:0.68rem;color:var(--ash);">We reply within one business day.</span>
+        </p>
+      </div>
+
+      <div class="contact-section">
+        <p class="contact-section-label">Bulk Enquiries</p>
+        <p style="font-size:0.75rem;color:var(--ash);">10L and above available on request. Commercial pricing for farms, nurseries, and market gardens.</p>
+      </div>
+
+      <!-- Mock QR code -->
+      <div class="qr-placeholder">
+        <div class="qr-inner">
+          <div></div><div></div><div></div><div class="off"></div><div></div>
+          <div></div><div class="off"></div><div></div><div></div><div class="off"></div>
+          <div></div><div></div><div class="off"></div><div></div><div></div>
+          <div class="off"></div><div></div><div></div><div class="off"></div><div></div>
+          <div></div><div class="off"></div><div></div><div></div><div></div>
+        </div>
+        <span>Scan to shop</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;">
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;color:var(--ash);line-height:1.65;margin-top:16px;">
+        ABN 84 694 072 952 · ACN 694 072 952<br>
+        © 2026 Dropbear Slurry Pty Ltd.<br>
+        Made in Queensland, Australia
+      </p>
+    </div>
+  </div>
+
+</div><!-- /brochure-back -->
+
+</body>
+</html>
