@@ -367,6 +367,24 @@ body { background: var(--cream); font-family: 'IBM Plex Sans', sans-serif; color
   color: var(--ash);
 }
 
+/* ── RESULTS GALLERY ── */
+.results-section { background: var(--cream); }
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+.results-grid img {
+  width: 100%; aspect-ratio: 4/3; object-fit: cover;
+  border-radius: 8px; display: block;
+}
+.results-caption {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ash); margin-top: 8px; text-align: center;
+}
+
 /* ── NEWSLETTER ── */
 .newsletter {
   background: var(--teal);
@@ -555,8 +573,8 @@ footer {
 
     <div class="product-card">
       <div class="product-img">
-        <img class="img-front" loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/549bb5bfbad951c7b68a4c02c8790d323461d5a9/original.png" alt="K-666 Plant Tonic 1L — front">
-        <img class="img-rear"  loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4d03ff29fdf483d81400b497fb9b260158b6dd7c/original.png" alt="K-666 Plant Tonic 1L — rear">
+        <img class="img-front" loading="lazy" src="img/k666-1l-front.png" alt="K-666 Plant Tonic 1L — front">
+        <img class="img-rear"  loading="lazy" src="img/k666-1l-rear.png" alt="K-666 Plant Tonic 1L — rear">
       </div>
       <div class="product-body">
         <p class="product-tag">Tonics</p>
@@ -571,8 +589,8 @@ footer {
 
     <div class="product-card">
       <div class="product-img">
-        <img class="img-front" loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/98aa443d53148b9f23dc3e2f593fb0bd7a6e8d40/original.png" alt="K-333 Plant Tonic 1L — front">
-        <img class="img-rear"  loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/8f2b7a46707aa5b9245732470111c6b4174a9f79/original.png" alt="K-333 Plant Tonic 1L — rear">
+        <img class="img-front" loading="lazy" src="img/k333-1l-front.png" alt="K-333 Plant Tonic 1L — front">
+        <img class="img-rear"  loading="lazy" src="img/k333-1l-rear.png" alt="K-333 Plant Tonic 1L — rear">
       </div>
       <div class="product-body">
         <p class="product-tag">Tonics</p>
@@ -587,8 +605,8 @@ footer {
 
     <div class="product-card">
       <div class="product-img">
-        <img class="img-front" loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/4894e9385838d3f999310177710bc75bcde9e3e4/original.png" alt="K-666 Plant Tonic 5L — front">
-        <img class="img-rear"  loading="lazy" src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1153bdbbd317d2a32b52a6538e7d6c0d39eeee5d/original.png" alt="K-666 Plant Tonic 5L — rear">
+        <img class="img-front" loading="lazy" src="img/k666-5l-front.png" alt="K-666 Plant Tonic 5L — front">
+        <img class="img-rear"  loading="lazy" src="img/k666-5l-front.png" alt="K-666 Plant Tonic 5L — rear">
       </div>
       <div class="product-body">
         <p class="product-tag">Tonics</p>
@@ -694,6 +712,17 @@ footer {
   </div>
 </section>
 
+<section class="section results-section">
+  <p class="section-label">Results</p>
+  <h2>Growing with Dropbear Slurry</h2>
+  <div class="results-grid">
+    <div>
+      <img src="img/result-agapanthus.png" alt="Agapanthus in full bloom — treated with Dropbear Slurry K-666" loading="lazy">
+      <p class="results-caption">Agapanthus · K-666 · Ipswich, QLD</p>
+    </div>
+  </div>
+</section>
+
 <section class="newsletter" id="contact">
   <h2>Stay in the Loop</h2>
   <p>New products, growing tips, and the occasional deal. No spam — just good stuff.</p>
@@ -710,7 +739,7 @@ footer {
     <li><a href="about.html">About</a></li>
     <li><a href="msds.html">MSDS</a></li>
     <li><a href="contact.html">Contact</a></li>
-    <li><a href="#">Privacy Policy</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
   </ul>
   <p class="footer-copy">© 2026 Dropbear Slurry Pty Ltd. · Made in Queensland, Australia</p>
 </footer>
